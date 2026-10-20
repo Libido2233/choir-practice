@@ -49,6 +49,7 @@ python <Skill目录>/scripts/build_player.py --self-test
 - `sounds` 是已经合并延音、安排装饰音的实际播放事件。时间轴以 `beat` 与 `dur` 为准，不从唱名反推声音。打击乐使用 GM MIDI drum key（例如 36 底鼓、38 军鼓、42 踩镲），播放用简易鼓音色。
 - `lyrics` 是歌词的文字记录数组，原谱未填词时为空。每条用 `eventIndex` 关联音符，含 `text`、`verse`、`syllabic`；可提供 `endBeat` 表示演唱终点，`extend:true` 与 `extendTo` 表示拖音线及末音符编号。生成器从音符推导小节、起拍和行号；页面用文字排版，不把歌词放进图片。谱图须去掉原歌词，防止重复；保留原谱音乐记号。音符 `numberX` 或 `x` 用于横向对齐。
 - `verified` 仅在实际完成该声部校对后设为 true；正式生成要求所有声部已核对。
+- 原谱某行未列出声部时，行数据可标 `sourceAbsent:true`，提供文字提示谱图及空白简谱；时间轴占位休止不能当作原谱明确休止。
 - 每个声部的 `systems` 长度须等于全局行数，每行都包含该声部图和简谱；整行休止也照常保留。行图为同一小节范围，图像和数字使用一致的横坐标。
 - `image` 支持本地图像、完整 SVG 或图像 data URL；`numbers` 支持 SVG 文件或完整 SVG 字符串。SVG 字符上的 `data-beat`、`data-duration` 可驱动逐音高亮；使用 `data-event` 标记每个音/休止。
 - 总时长来自小节末端。变拍通过每小节 `dur`/`beats`/`beatType` 表达。不要在休止处压缩各轨时间。速度是本次练习的固定 BPM，速度变化需另行扩展后验证。
