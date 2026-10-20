@@ -182,7 +182,7 @@ def prepare(raw, base, draft=False):
             row["numbers"] = resource(row.get("numbers"), base, svg=True)
     if unchecked and not draft:
         raise ValueError("以下声部尚未核对：" + "、".join(unchecked) + "；初稿可使用 --draft")
-    default = data.get("defaultPart") or next((p["id"] for p in parts if p["id"].upper() == "T"), parts[0]["id"])
+    default = data.get("defaultPart") or next((p["id"] for p in parts if p["role"] in {"voice", "solo"}), parts[0]["id"])
     if default not in seen:
         raise ValueError("defaultPart 不是现有声部")
     data.update(defaultPart=default, totalBeats=end, systemCount=system + 1, unchecked=unchecked)
@@ -206,7 +206,17 @@ def self_test():
     raw['parts'][0]['lyrics']=[{'eventIndex':0,'text':'啊','verse':1}]
     data = prepare(raw, Path.cwd())
     assert data['parts'][0]['lyrics'][0]['beat']==0 and data['parts'][0]['lyrics'][0]['endBeat']==4
-    assert len(data["parts"]) == 6 and data["defaultPart"] == "T" and data["totalBeats"] == 4
+    assert len(data["parts"]) == 6 and data["defaultPart"] == "Solo" and data["totalBeats"] == 4
+    specified = copy.deepcopy(raw)
+    specified["defaultPart"] = "T"
+    assert prepare(specified, Path.cwd())["defaultPart"] == "T"
+    reordered = copy.deepcopy(raw)
+    reordered["parts"] = [reordered["parts"][-1]] + reordered["parts"][:-1]
+    assert prepare(reordered, Path.cwd())["defaultPart"] == "Solo"
+    single = copy.deepcopy(raw)
+    single["parts"] = [single["parts"][1]]
+    single["parts"][0].update(id="Melody", name="旋律", role="voice")
+    assert prepare(single, Path.cwd())["defaultPart"] == "Melody"
     html = render(data)
     assert "__CHOIR_DATA__" not in html and 'data:image/svg+xml;base64,' in html
     broken = copy.deepcopy(raw)

@@ -23,27 +23,28 @@ python <Skill目录>/scripts/build_player.py --self-test
 {
   "title": "曲名",
   "bpm": 72,
-  "defaultPart": "T",
+  "defaultPart": "Melody",
   "notation": "固定唱名 1=C · 中音1=C4",
   "bars": [
     {"label": "1", "beat": 0, "dur": 4, "system": 0, "beats": 4, "beatType": 4, "left": 0.08, "right": 0.95}
   ],
   "parts": [
     {
-      "id": "T", "name": "T 男高音", "role": "voice", "verified": true,
+      "id": "Melody", "name": "旋律", "role": "voice", "verified": true,
       "events": [
-        {"eventIndex": 0, "bar": 1, "beat": 0, "dur": 1, "midi": 52, "name": "E3", "x": 0.15},
+        {"eventIndex": 0, "bar": 1, "beat": 0, "dur": 1, "midi": 60, "name": "C4", "x": 0.15},
         {"bar": 1, "beat": 1, "dur": 3, "midi": null, "name": "休止", "x": 0.4}
       ],
-      "sounds": [{"bar": 1, "beat": 0, "dur": 1, "midi": 52}],
+      "sounds": [{"bar": 1, "beat": 0, "dur": 1, "midi": 60}],
       "lyrics": [{"eventIndex": 0, "text": "啊", "verse": 1, "syllabic": "single"}],
-      "systems": [{"image": "谱面/T-01.png", "numbers": "简谱/T-01.svg"}]
+      "systems": [{"image": "谱面/旋律-01.png", "numbers": "简谱/旋律-01.svg"}]
     }
   ]
 }
 ```
 
-- `parts` 可包含任意数量的声部。`role` 用 `voice`、`solo`、`accompaniment` 或 `percussion`；声部分部用不同 `id`。Solo 可有多个。适用于合唱团与带伴奏的合唱。
+- `defaultPart` 用于明确指定练习轨；省略时按数据顺序选择第一个演唱轨（voice/solo），无演唱轨时选第一轨。
+- `parts` 可包含一个旋律轨或多个声部。`role` 用 `voice`、`solo`、`accompaniment` 或 `percussion`；声部分部用不同 `id`。Solo 可有多个。适用于合唱团与带伴奏的合唱。
 - `events` 是谱面事件，含休止（`midi:null`）、装饰音（`grace:true`）、备选音（`optional:true`）和逐音试听；`x` 是相对整张谱图的横坐标 0–1。连音组和记号保存在结构化源文件及简谱 SVG 中。
 - `sounds` 是已经合并延音、安排装饰音的实际播放事件。时间轴以 `beat` 与 `dur` 为准，不从唱名反推声音。打击乐使用 GM MIDI drum key（例如 36 底鼓、38 军鼓、42 踩镲），播放用简易鼓音色。
 - `lyrics` 是歌词的文字记录数组，原谱未填词时为空。每条用 `eventIndex` 关联音符，含 `text`、`verse`、`syllabic`；可提供 `endBeat` 表示演唱终点，`extend:true` 与 `extendTo` 表示拖音线及末音符编号。生成器从音符推导小节、起拍和行号；页面用文字排版，不把歌词放进图片。谱图须去掉原歌词，防止重复；保留原谱音乐记号。音符 `numberX` 或 `x` 用于横向对齐。
