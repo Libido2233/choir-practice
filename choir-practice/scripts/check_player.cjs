@@ -12,7 +12,7 @@ let context,sourceCount=0,oscillatorCount=0;
 class AudioContext {
  constructor(){this.currentTime=0;this.sampleRate=22050;this.destination={};context=this}
  async resume(){}async decodeAudioData(){return {duration:10}}
- createGain(){return {gain:{value:1,setValueAtTime(){},linearRampToValueAtTime(){},exponentialRampToValueAtTime(){}},connect(){}}}
+ createGain(){return {gain:{value:1,scheduled:[],setValueAtTime(value,time){this.value=value;this.scheduled.push({value,time})},cancelScheduledValues(){this.scheduled=[]},linearRampToValueAtTime(){},exponentialRampToValueAtTime(){}},connect(){}}}
  createDynamicsCompressor(){return {connect(){}}}createBiquadFilter(){return {frequency:{value:0},connect(){}}}
  createBuffer(channels,size){return {getChannelData(){return new Float32Array(Math.floor(size))}}}
  createBufferSource(){sourceCount++;return {playbackRate:{value:1},connect(){},start(){},stop(){}}}
@@ -66,5 +66,21 @@ const run=code=>vm.runInContext(code,sandbox);
  elements.part.value='T';elements.part.onchange();const resetMix=run('JSON.stringify({volumes,audible})');run('DATA.parts.find(p=>p.id==="Solo").role="voice";initialMix();referenceChoice="auto";referenceChoices();showSystem(0)');assert(run('DATA.parts.every(p=>audible[p.id]===(p.id===selected))'));assert.equal(elements.referenceRows.children.length,0);
  const noSoloMix=run('JSON.stringify({volumes,audible})');elements.referencePart.value='S';elements.referencePart.onchange();assert.equal(elements.referenceRows.children[0].textContent,'S');assert.equal(run('JSON.stringify({volumes,audible})'),noSoloMix);
  run('DATA.parts.find(p=>p.id==="Solo").role="solo";referenceChoice="auto";referenceChoices();showSystem(0)');assert.equal(elements.referenceRows.children[0].textContent,'Solo');
+
+ run('stop();DATA.melodyGuide=[{startBeat:0,endBeat:2,part:"Solo"},{startBeat:2,endBeat:4,part:"S"},{startBeat:4,endBeat:7,part:"B"},{startBeat:7,endBeat:11,part:null}];referenceChoice="auto";showSystem(0);initialMix();referenceChoices()');
+ assert.equal(elements.referencePart.children[0].textContent,'跟随旋律');assert(run('audible.T&&audible.Solo&&!audible.S&&volumes.Solo===50'));
+ elements.from.value=1;elements.to.value=3;elements.countin.checked=false;await run('play()');
+ assert(run('gains.S.gain.scheduled.some(x=>x.value===.5&&Math.abs(x.time-(origin+2*60/runTempo))<1e-6)'));
+ context.currentTime=run('origin+2.1*60/runTempo');run('tick()');assert.equal(elements.referenceRows.children[0].textContent,'S');assert.equal(elements.score.src,'T0');assert.equal(elements.nextScore.src,'T1');assert(run('audible.S&&!audible.Solo&&volumes.S===50'));
+ elements.referencePart.value='Solo';elements.referencePart.onchange();assert.equal(elements.referenceRows.children[0].textContent,'Solo');assert(run('audible.S&&!audible.Solo'));
+ run('editVolume("B",23);editAudible("B",false)');assert(run('gains.B.gain.scheduled.every(x=>x.value===0)'));
+ context.currentTime=run('origin+4.1*60/runTempo');run('tick()');assert(run('!audible.B&&volumes.B===23'));
+ run('stop();selectBar(2);referenceChoice="auto";initialMix();referenceChoices();showSystem(1)');assert.equal(elements.referenceRows.children[0].textContent,'B');assert(run('audible.B&&volumes.B===50'));
+ elements.part.value='B';elements.part.onchange();assert.equal(elements.referenceRows.children.length,0);assert(run('volumes.B===100&&DATA.parts.every(p=>audible[p.id]===(p.id==="B"))'));
+ run('showSystem(2)');assert.equal(elements.referenceRows.children.length,0);assert(run('DATA.parts.every(p=>audible[p.id]===(p.id==="B"))'));
+ run('editVolume("S",37);editAudible("S",true);savePreferences();mixOverrides.volumes={};mixOverrides.audible={};loadPreferences()');assert(run('volumes.S===37&&audible.S'));
+ elements.part.value='T';elements.part.onchange();assert(run('Object.keys(mixOverrides.volumes).length===0&&!audible.S'));
+ run('selectBar(2)');elements.to.value=3;await run('play()');assert(run('startBeat===4&&gains.B.gain.scheduled[0].value===.5'));context.currentTime=run('origin+3.1*60/runTempo');run('tick()');assert.equal(elements.referenceRows.children.length,0);assert(run('audible.T&&!audible.B'));
+ run('stop()');console.log('PASS: melody handoffs within a row, precise audio automation, mid-section start, duplicate suppression, empty guide, manual overrides and persistence.');
  run('stop()');console.log('PASS: independent listening/view/practice choices, six track switches and volumes, single optional reference, no-Solo fallback, next row follows practice part, preferences, variable meter, pause, loops and preview.');
 })().catch(e=>{console.error(e);process.exitCode=1});

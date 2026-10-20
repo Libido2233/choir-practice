@@ -44,6 +44,7 @@ python <Skill目录>/scripts/build_player.py --self-test
 ```
 
 - `defaultPart` 用于明确指定练习轨；省略时按数据顺序选择第一个演唱轨（voice/solo），无演唱轨时选第一轨。
+- 可选 `melodyGuide`：`[{"startBeat":0,"endBeat":8,"part":"S"},{"startBeat":8,"endBeat":16,"part":null}]`。按已核对的旋律交接连续覆盖全曲，起拍含、结束拍不含；弱起可在小节内交接。`null` 表示此段不指定参照。它选择原轨作练习参照，不生成新主唱轨或改写音符。页面“跟随旋律”按拍换谱，默认只听自己100%与当段参照50%；参照等于自己时只听自己。手动音量和勾选覆盖该轨的自动设置，切换练习声部时重置；手动选择参照谱不改变听音。
 - `parts` 可包含一个旋律轨或多个声部。`role` 用 `voice`、`solo`、`accompaniment` 或 `percussion`；声部分部用不同 `id`。Solo 可有多个。适用于合唱团与带伴奏的合唱。
 - `events` 是谱面事件，含休止（`midi:null`）、装饰音（`grace:true`）、备选音（`optional:true`）和逐音试听；`x` 是相对整张谱图的横坐标 0–1。连音组和记号保存在结构化源文件及简谱 SVG 中。
 - `sounds` 是已经合并延音、安排装饰音的实际播放事件。时间轴以 `beat` 与 `dur` 为准，不从唱名反推声音。打击乐使用 GM MIDI drum key（例如 36 底鼓、38 军鼓、42 踩镲），播放用简易鼓音色。

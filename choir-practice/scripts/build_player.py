@@ -180,6 +180,24 @@ def prepare(raw, base, draft=False):
         for row in rows:
             row["image"] = resource(row.get("image"), base)
             row["numbers"] = resource(row.get("numbers"), base, svg=True)
+    guide = data.get("melodyGuide")
+    if guide is not None:
+        if not isinstance(guide, list) or not guide:
+            raise ValueError("melodyGuide 应为非空分段数组")
+        previous = 0
+        for segment in guide:
+            if not isinstance(segment, dict):
+                raise ValueError("旋律参照分段须为对象")
+            start = number(segment.get("startBeat"), "旋律参照起拍")
+            finish = number(segment.get("endBeat"), "旋律参照结束拍")
+            if abs(start - previous) > 0.00001 or finish <= start or finish > end + 0.00001:
+                raise ValueError("旋律参照分段须连续覆盖全曲，结束拍大于起拍")
+            pid = segment.get("part")
+            if pid is not None and not any(p["id"] == pid and p["role"] in {"voice", "solo"} for p in parts):
+                raise ValueError("旋律参照须使用现有演唱声部或 null")
+            previous = finish
+        if abs(previous - end) > 0.00001:
+            raise ValueError("旋律参照分段须覆盖至曲末")
     if unchecked and not draft:
         raise ValueError("以下声部尚未核对：" + "、".join(unchecked) + "；初稿可使用 --draft")
     default = data.get("defaultPart") or next((p["id"] for p in parts if p["role"] in {"voice", "solo"}), parts[0]["id"])
@@ -218,6 +236,17 @@ def self_test():
     single["parts"][0].update(id="Melody", name="旋律", role="voice")
     assert prepare(single, Path.cwd())["defaultPart"] == "Melody"
     html = render(data)
+    guided = copy.deepcopy(raw)
+    guided['melodyGuide'] = [{'startBeat': 0, 'endBeat': 2, 'part': 'S'}, {'startBeat': 2, 'endBeat': 4, 'part': None}]
+    assert prepare(guided, Path.cwd())['melodyGuide'][0]['part'] == 'S'
+    for field, value in [('part', 'Drums'), ('part', 'Missing'), ('startBeat', 1), ('endBeat', 5)]:
+        broken_guide = copy.deepcopy(guided)
+        broken_guide['melodyGuide'][0][field] = value
+        try:
+            prepare(broken_guide, Path.cwd())
+            raise AssertionError('未拒绝无效旋律参照')
+        except ValueError:
+            pass
     assert "__CHOIR_DATA__" not in html and 'data:image/svg+xml;base64,' in html
     broken = copy.deepcopy(raw)
     broken["parts"][1]["verified"] = False
