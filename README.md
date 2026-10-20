@@ -33,3 +33,9 @@
 ## 素材
 
 仓库仅包含 Skill、脚本、网页模板及采样，不包含社团曲谱或个人练习数据。钢琴采样为 Alexander Holm 的 Salamander Grand Piano，采用 CC BY 3.0；详细署名和来源见 `choir-practice/assets/piano/LICENSE.txt`。
+
+## 许可证
+
+代码、网页模板和 Skill 说明采用 [MIT 许可证](LICENSE)，允许使用、修改、分发和商用，需保留版权及许可声明。
+
+钢琴采样不适用 MIT，仍按 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) 及[原素材许可](choir-practice/assets/piano/LICENSE.txt)使用。使用者导入的乐谱和歌词不属于本仓库的许可范围。
