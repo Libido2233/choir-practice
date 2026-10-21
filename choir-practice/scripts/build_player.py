@@ -180,6 +180,7 @@ def prepare(raw, base, draft=False):
         for row in rows:
             row["image"] = resource(row.get("image"), base)
             row["numbers"] = resource(row.get("numbers"), base, svg=True)
+            row["numbers"] = row["numbers"].replace('Times New Roman,SimSun,serif','SimSun,Segoe UI Symbol,Songti SC,serif').replace('"Times New Roman",serif','"SimSun","Segoe UI Symbol","Songti SC",serif')
     guide = data.get("melodyGuide")
     if guide is not None:
         if not isinstance(guide, list) or not guide:

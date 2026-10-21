@@ -35,7 +35,7 @@ const run=code=>vm.runInContext(code,sandbox);
  run('sliders.T.value=37;sliders.T.onchange()');assert(run('volumes.T===37'));run('sliders.T.value=999;sliders.T.onchange()');assert(run('volumes.T===100'));run('sliders.T.value=-5;sliders.T.onchange()');assert(run('volumes.T===0'));run('setVolume("T",100)');
  assert(elements.currentLyrics.innerHTML.includes('class="lyric-word"'));assert(!elements.currentLyrics.innerHTML.includes('<svg'));
 
- await run('play()');assert(run('playing'));assert(sourceCount>10&&oscillatorCount>=4);assert(run('gains.T.gain.value===1&&gains.Solo.gain.value===.5'));
+ await run('play()');assert(run('playing'));assert(sourceCount===0&&oscillatorCount>=4);context.currentTime=run('origin');run('scheduleAudio()');assert(sourceCount>0&&sourceCount<=6);assert(run('gains.T.gain.value===1&&gains.Solo.gain.value===.5'));
  run('setAudible("S",true);setVolume("S",41)');assert(run('gains.S.gain.value===.41&&gains.T.gain.value===1&&gains.Solo.gain.value===.5'));
  run('setAudible("S",false)');assert(run('gains.S.gain.value===0&&volumes.S===41'));run('setAudible("S",true)');assert(run('gains.S.gain.value===.41'));
  run('for(const p of DATA.parts)setAudible(p.id,p.id===selected)');assert(run('gains.T.gain.value===1&&gains.S.gain.value===0&&gains.Solo.gain.value===0'));

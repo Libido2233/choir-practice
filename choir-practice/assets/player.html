@@ -29,7 +29,7 @@ Third-party piano samples retain their CC BY 3.0 license; attribution below.
 <title>声部练习室</title>
 <style>
 :root{color-scheme:light;--ink:#203e3d;--green:#12695e;--line:#dce5de;--paper:#fffefb}
-html{-webkit-text-size-adjust:100%;text-size-adjust:100%}*{box-sizing:border-box}body{margin:0;background:#f2f4f0;color:var(--ink);font:15px/1.6 "Microsoft YaHei",sans-serif}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}*{box-sizing:border-box}body{margin:0;background:#f2f4f0;color:var(--ink);font:15px/1.6 "SimSun","Songti SC",serif}
 main{max-width:1120px;margin:auto;padding:26px 24px calc(130px + env(safe-area-inset-bottom,0px))}header{padding:0 4px}h1{overflow-wrap:anywhere;margin:4px 0;font-size:28px;letter-spacing:.02em}h2{font-size:19px;margin:0}.muted{font-size:13px;color:#647b75}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px;margin:16px 0;box-shadow:0 3px 16px #254f3d05}.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 button,select,input[type=number]{font:inherit;color:inherit;border:1px solid #ccdad1;border-radius:10px;padding:8px 12px;background:white;max-width:100%}button{cursor:pointer;min-height:42px;font-weight:500;transition:background .15s,border-color .15s}button:hover{background:#edf5ef;border-color:#82ac97}button:active{background:#dfeee3}button:disabled{opacity:.45;cursor:default}button.primary{background:var(--green);color:white;border-color:var(--green);min-width:140px}button.primary:hover{background:#0b584e}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #76b69b;outline-offset:3px}
@@ -39,7 +39,7 @@ input[type=number]{width:76px}input[type=range],input[type=checkbox]{accent-colo
 #mix{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:8px;margin-top:10px}.channel{display:flex;flex-wrap:wrap;align-items:center;gap:9px;background:#f4f7f2;border:1px solid #e4ebe1;border-radius:10px;padding:10px 12px;min-width:0}.channel label{min-width:90px;font-size:14px;white-space:nowrap}.volume-control{display:flex;flex-shrink:0;align-items:center;gap:5px;margin-left:auto}.volume-control button{min-width:36px;min-height:38px;padding:4px 8px;font-size:20px;line-height:1}.volume-control input[type=number]{width:56px;padding:6px 2px;text-align:center;appearance:textfield;-moz-appearance:textfield;font-variant-numeric:tabular-nums}.volume-control input::-webkit-inner-spin-button,.volume-control input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}.channel output{font-size:12px;color:#597167}
 .toolbar{min-width:0;justify-content:space-between;margin-bottom:16px}.toolbar button{font-size:14px}
 .focus{background:white;border:1px solid #a9c4b4;border-radius:12px;padding:14px}.context{background:#f5f7f2;border:1px solid #e3e9df;border-radius:12px;padding:14px;margin-top:14px}.heading{overflow-wrap:anywhere;font-size:14px;margin-bottom:8px;color:#627a6e}.part-label{font-size:13px;font-weight:600;margin:12px 0 4px}.part-label.solo{color:#59788a}#ownLabel{border-top:1px solid #dce7dd;padding-top:10px;color:var(--green)}
-.staff-scroll{overflow:hidden;border-radius:6px;background:white;min-width:0}.staff-content{width:100%;min-width:0;position:relative}.scoreline{position:relative}.scoreline img{display:block;width:100%}.shade{position:absolute;top:0;height:100%;background:#0c8d7114;pointer-events:none}.cursor{position:absolute;top:20%;height:60%;width:3px;background:#d07020;display:none;pointer-events:none}.numbers svg{display:block;width:100%;height:auto}.numbers .sounding text{fill:#c06a12}.lyrics{container-type:inline-size}@supports(font-size:1cqw){.lyrics .lyric-verse{font-size:clamp(10px,2cqw,21px)}}.lyric-verse{position:relative;height:32px;margin:3px 0 5px;font:clamp(10px,2vw,21px)/1.5 "Times New Roman","SimSun",serif;color:#203e3d}.lyric-word{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}.lyric-word.sounding{color:#b75f0d;font-weight:bold}.lyric-extension{position:absolute;top:25px;border-bottom:1px solid currentColor}
+.staff-scroll{overflow:hidden;border-radius:6px;background:white;min-width:0}.staff-content{width:100%;min-width:0;position:relative}.scoreline{position:relative}.scoreline img{display:block;width:100%}.shade{position:absolute;top:0;height:100%;background:#0c8d7114;pointer-events:none}.cursor{position:absolute;top:20%;height:60%;width:3px;background:#d07020;display:none;pointer-events:none}.numbers svg{display:block;width:100%;height:auto}.numbers .sounding text{fill:#c06a12}.lyrics{container-type:inline-size}@supports(font-size:1cqw){.lyrics .lyric-verse{font-size:clamp(10px,2cqw,21px)}}.lyric-verse{position:relative;height:32px;margin:3px 0 5px;font:clamp(10px,2vw,21px)/1.5 "SimSun","Songti SC",serif;color:#203e3d}.lyric-word{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}.lyric-word.sounding{color:#b75f0d;font-weight:bold}.lyric-extension{position:absolute;top:25px;border-bottom:1px solid currentColor}
 #barlinks{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}#barlinks button{font-size:13px;padding:3px 10px;min-height:32px;border-radius:7px}#barlinks button.active{background:var(--green);color:white}.note-preview{background:#edf5ef;border:1px solid #a8c6b1;border-radius:12px;padding:16px}.note-preview .section-title{font-size:19px;margin-bottom:14px}#pitchlist{display:grid;gap:12px}.note-group{background:#fffefb;border:1px solid #d1e0d4;border-radius:10px;padding:12px}.note-group-title{font-size:13px;color:#587467;margin-bottom:9px}.note-buttons{display:flex;flex-wrap:wrap;gap:8px}#pitchlist button{font-size:15px;font-weight:600;padding:10px 14px;min-width:80px;min-height:46px;background:white;border-color:#75a88b;color:#125d43;box-shadow:0 2px 0 #c6dccc}#pitchlist button:hover{background:#dcefe1;border-color:#376f50}#pitchlist button:active{box-shadow:none;transform:translateY(1px)}.badge{background:#eaf2e8;border-radius:7px;padding:3px 9px;font-size:13px}
 .practice-section{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}.section-title{font-size:15px;font-weight:600;color:var(--green);margin:0 0 10px}#draft{background:#fff0d5;padding:12px;border-radius:8px;margin:14px 0}[hidden]{display:none!important}
 @media(max-width:650px){main{padding:16px 10px calc(180px + env(safe-area-inset-bottom,0px))}.card{padding:14px;border-radius:14px}h1{font-size:24px}.focus,.context{padding:8px}.channel{padding:9px 10px}.channel label{min-width:85px}#pitch{font-size:19px}.toolbar{gap:10px}.toolbar>.row{gap:6px}.toolbar button{padding:7px 9px;min-height:38px}.practice-choice select{min-width:130px}}
@@ -88,26 +88,60 @@ function setVolume(id,value){volumes[id]=Math.max(0,Math.min(100,Number(value)||
 function setAudible(id,value){audible[id]=!!value;listenChecks[id].checked=!!value;updateGain(id)}
 function initialMix(){if(DATA.melodyGuide){mixOverrides.volumes={};mixOverrides.audible={};syncGuidedMix(referenceBeat);for(const p of DATA.parts)updateGain(p.id);return}const practicingSolo=part().role==='solo';for(const p of DATA.parts){setAudible(p.id,p.id===selected||(!practicingSolo&&p.role==='solo'));setVolume(p.id,p.id===selected?100:!practicingSolo&&p.role==='solo'?50:30)}}
 async function audio(){
- if(!ctx){const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)throw new Error('浏览器不支持音频');ctx=new Audio();master=ctx.createGain();master.gain.value=.5;const compressor=ctx.createDynamicsCompressor();master.connect(compressor);compressor.connect(ctx.destination);for(const p of DATA.parts){const g=ctx.createGain();g.gain.value=audible[p.id]?volumes[p.id]/100:0;g.connect(master);gains[p.id]=g}noiseBuffer=ctx.createBuffer(1,ctx.sampleRate*.3,ctx.sampleRate);const samples=noiseBuffer.getChannelData(0);for(let i=0;i<samples.length;i++)samples[i]=Math.random()*2-1}
+ if(!ctx){const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)throw new Error('浏览器不支持音频');ctx=new Audio({latencyHint:"playback"});master=ctx.createGain();master.gain.value=.5;const compressor=ctx.createDynamicsCompressor();master.connect(compressor);compressor.connect(ctx.destination);for(const p of DATA.parts){const g=ctx.createGain();g.gain.value=audible[p.id]?volumes[p.id]/100:0;g.connect(master);gains[p.id]=g}noiseBuffer=ctx.createBuffer(1,ctx.sampleRate*.3,ctx.sampleRate);const samples=noiseBuffer.getChannelData(0);for(let i=0;i<samples.length;i++)samples[i]=Math.random()*2-1}
  await ctx.resume();
  if(!loading)loading=Promise.all(Object.entries(PIANO).map(async([key,b64])=>{buffers[key]=await ctx.decodeAudioData(Uint8Array.from(atob(b64),c=>c.charCodeAt(0)).buffer)})).catch(e=>{loading=null;throw e});
  await loading;
 }
 function tone(pitch,when,duration,id,preview=false){
- const key=Object.keys(buffers).map(Number).sort((a,b)=>Math.abs(a-pitch)-Math.abs(b-pitch))[0];const source=ctx.createBufferSource(),g=ctx.createGain();source.buffer=buffers[key];source.playbackRate.value=2**((pitch-key)/12);source.connect(g);g.connect(preview?master:gains[id]);g.gain.setValueAtTime(0,when);g.gain.linearRampToValueAtTime(.65,when+.005);g.gain.setValueAtTime(.65,when+Math.max(.006,duration));g.gain.linearRampToValueAtTime(0,when+duration+.18);source.start(when);source.stop(when+duration+.19);nodes.push(source);
+ const key=Object.keys(buffers).map(Number).sort((a,b)=>Math.abs(a-pitch)-Math.abs(b-pitch))[0];const source=ctx.createBufferSource(),g=ctx.createGain();source.buffer=buffers[key];source.playbackRate.value=2**((pitch-key)/12);source.connect(g);g.connect(preview?master:gains[id]);g.gain.setValueAtTime(0,when);g.gain.linearRampToValueAtTime(.65,when+.005);g.gain.setValueAtTime(.65,when+Math.max(.006,duration));g.gain.linearRampToValueAtTime(0,when+duration+.18);source.start(when);source.stop(when+duration+.19);trackSource(source,g);
 }
-function drum(key,when,id,preview=false){const g=ctx.createGain();g.connect(preview?master:gains[id]);let source,length;if(key===35||key===36){source=ctx.createOscillator();source.frequency.setValueAtTime(130,when);source.frequency.exponentialRampToValueAtTime(45,when+.14);length=.2}else{source=ctx.createBufferSource();source.buffer=noiseBuffer;const filter=ctx.createBiquadFilter();filter.type=(key===42||key===44||key===46)?'highpass':'bandpass';filter.frequency.value=filter.type==='highpass'?6500:1500;source.connect(filter);filter.connect(g);length=filter.type==='highpass'?.07:.18}if(source.frequency)source.connect(g);g.gain.setValueAtTime(.6,when);g.gain.exponentialRampToValueAtTime(.001,when+length);source.start(when);source.stop(when+length+.01);nodes.push(source)}
-function click(when,strong){const source=ctx.createOscillator(),g=ctx.createGain();source.frequency.value=strong?1200:850;source.connect(g);g.connect(master);g.gain.setValueAtTime(.13,when);g.gain.exponentialRampToValueAtTime(.001,when+.055);source.start(when);source.stop(when+.06);nodes.push(source)}
-function kill(){for(const n of nodes){try{n.stop()}catch{}}nodes=[];clearInterval(timer);timer=null}
+function drum(key,when,id,preview=false){const g=ctx.createGain();g.connect(preview?master:gains[id]);let source,length;if(key===35||key===36){source=ctx.createOscillator();source.frequency.setValueAtTime(130,when);source.frequency.exponentialRampToValueAtTime(45,when+.14);length=.2}else{source=ctx.createBufferSource();source.buffer=noiseBuffer;const filter=ctx.createBiquadFilter();filter.type=(key===42||key===44||key===46)?'highpass':'bandpass';filter.frequency.value=filter.type==='highpass'?6500:1500;source.connect(filter);filter.connect(g);length=filter.type==='highpass'?.07:.18}if(source.frequency)source.connect(g);g.gain.setValueAtTime(.6,when);g.gain.exponentialRampToValueAtTime(.001,when+length);source.start(when);source.stop(when+length+.01);trackSource(source,g)}
+function click(when,strong){const source=ctx.createOscillator(),g=ctx.createGain();source.frequency.value=strong?1200:850;source.connect(g);g.connect(master);g.gain.setValueAtTime(.13,when);g.gain.exponentialRampToValueAtTime(.001,when+.055);source.start(when);source.stop(when+.06);trackSource(source,g)}
+// BEGIN CHOIR AUDIO SCHEDULER v1
+let scheduleTimer=null,audioQueue=[],queueIndex=0;
+const AUDIO_AHEAD=1.5;
+function playbackPosition(beat){return typeof performanceAt==='function'?performanceAt(beat):beat}
+function trackSource(source,gain){
+ nodes.push(source);
+ source.onended=()=>{const i=nodes.indexOf(source);if(i>=0)nodes.splice(i,1);source.disconnect?.();gain.disconnect?.()};
+}
+function prepareAudioQueue(){
+ const sec=60/runTempo,base=playbackPosition(startBeat);audioQueue=[];queueIndex=0;
+ for(const p of DATA.parts)for(const e of p.sounds){
+  const a=Math.max(startBeat,e.beat),b=Math.min(endBeat,e.beat+e.dur);if(b<=a)continue;
+  const percussion=p.role==='percussion'||e.percussion;if(percussion&&e.beat<startBeat)continue;
+  audioQueue.push({when:origin+(playbackPosition(a)-base)*sec,duration:(playbackPosition(b)-playbackPosition(a))*sec*(e.staccato?.55:1),id:p.id,midi:e.midi,percussion});
+ }
+ if($('click').checked)for(const b of DATA.bars){
+  const pulse=4/b.beatType,phase=(b.pickupPhase||0)%pulse;
+  for(let offset=phase?pulse-phase:0;offset<b.dur-.00001;offset+=pulse){const beat=b.beat+offset;if(startBeat<=beat&&beat<endBeat)audioQueue.push({when:origin+(playbackPosition(beat)-base)*sec,click:true,strong:offset===0})}
+ }
+ audioQueue.sort((a,b)=>a.when-b.when);
+ scheduleAudio();scheduleTimer=setInterval(scheduleAudio,40);
+}
+function scheduleAudio(){
+ if(!playing)return;
+ const now=ctx.currentTime,horizon=now+AUDIO_AHEAD;
+ while(queueIndex<audioQueue.length&&audioQueue[queueIndex].when<=horizon){
+  const e=audioQueue[queueIndex++];
+  if(e.click){if(e.when>=now-.02)click(Math.max(e.when,now+.005),e.strong);continue}
+  if(e.when+e.duration<=now+.005)continue;
+  const when=Math.max(e.when,now+.005),duration=e.duration-(when-e.when);
+  if(e.percussion){if(e.when>=now-.04)drum(e.midi,when,e.id)}else tone(e.midi,when,duration,e.id);
+ }
+}
+// END CHOIR AUDIO SCHEDULER v1
+
+function kill(){clearInterval(scheduleTimer);scheduleTimer=null;audioQueue=[];queueIndex=0;for(const n of nodes){try{n.stop()}catch{}}nodes=[];clearInterval(timer);timer=null}
 function stop(keep=false){resumeBeat=keep&&playing?Math.max(startBeat,Math.min(endBeat,startBeat+(ctx.currentTime-origin)*runTempo/60)):null;playing=false;kill();text('play',keep?'▶ 继续练习':'▶ 开始练习');$('cursor').style.display='none';for(const id of ['currentNumbers','currentLyrics'])for(const n of $(id).querySelectorAll('[data-event]'))n.classList.remove('sounding')}
 function range(){const a=Math.max(1,Math.min(N,Math.round(Number($('from').value)||1))),b=Math.max(a,Math.min(N,Math.round(Number($('to').value)||N)));$('from').value=a;$('to').value=b;return [DATA.bars[a-1].beat,DATA.bars[b-1].beat+DATA.bars[b-1].dur,a,b]}
 async function play(){
  if(playing){stop(true);text('status','已暂停');return}
  $('play').disabled=true;text('status','准备钢琴音色…');
  try{await audio();kill();const [lo,hi,a]=range();startBeat=resumeBeat!==null&&resumeBeat>=lo&&resumeBeat<hi?resumeBeat:lo;endBeat=hi;runTempo=Math.max(20,Math.min(300,Number($('tempo').value)||DATA.bpm));const sec=60/runTempo,bar=DATA.bars[a-1],step=4/bar.beatType,pre=$('countin').checked?bar.beats*step:0;origin=ctx.currentTime+.12+pre*sec;playing=true;resumeBeat=null;text('play','Ⅱ 暂停');for(let b=0;b<pre-.00001;b+=step)click(origin-(pre-b)*sec,b===0);
- for(const p of DATA.parts)for(const e of p.sounds){const a=Math.max(startBeat,e.beat),b=Math.min(endBeat,e.beat+e.dur);if(b>a){const when=origin+(a-startBeat)*sec;if(p.role==='percussion'){if(e.beat>=startBeat)drum(e.midi,when,p.id)}else tone(e.midi,when,(b-a)*sec,p.id)}}
- if($('click').checked)for(const b of DATA.bars){const pulse=4/b.beatType;for(let offset=0;offset<b.dur-.00001;offset+=pulse){const beat=b.beat+offset;if(startBeat<=beat&&beat<endBeat)click(origin+(beat-startBeat)*sec,offset===0)}}
- if(DATA.melodyGuide)for(const p of DATA.parts)updateGain(p.id);timer=setInterval(tick,35);tick();
+ prepareAudioQueue();
+ if(DATA.melodyGuide)for(const p of DATA.parts)updateGain(p.id);timer=setInterval(tick,80);tick();
  }catch(e){stop();text('status','音频未能启动，请点击重试或用系统浏览器打开。');console.error(e)}finally{$('play').disabled=false}
 }
 function tick(){
