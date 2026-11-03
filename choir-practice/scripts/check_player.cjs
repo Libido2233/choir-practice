@@ -65,7 +65,7 @@ function sampleData(withGuide=false){
  for(const id of ['modeListen','modeRead','listenView','readView','reset','back','fwd','play','seek','loopband','lineplay','readerChips','readerParts','readerPages'])assert(el[id],'缺少 #'+id);
  // 默认混音
  assert(run('volumes.T===100&&volumes.Solo===50&&audible.T&&audible.Solo&&!audible.S&&!audible.Drums'),'默认混音不对');
- assert.equal(el.score.src,'T0');assert.equal(el.nextScore.src,'T1');assert(el.currentLyrics.innerHTML.includes('du &amp; &lt;'));
+ assert(run("lineOwn.length===1&&lineOwn[0].img.src==='T0'&&nextOwn[0].img.src==='T1'"),'当前行/下一行谱图');assert(run("lineOwn[0].lyrics.innerHTML.includes('du &amp; &lt;')"),'歌词应转义');
  await flush();
  assert(run('track&&!stale'),'载入后应预先合成');
  const wav=blobs.at(-1).parts;assert.equal(String.fromCharCode(...new Uint8Array(wav[0].buffer,0,4)),'RIFF');
@@ -85,7 +85,7 @@ function sampleData(withGuide=false){
  assert(run('lineLoop===1&&track.loop&&track.lo===8&&track.hi===16'),'循环本行');
  assert(!el.player.loop,'带预备拍的循环应跳过音频开头');
  el.player.fire('ended');assert(run('player.currentTime===track.pre&&jumpTo===null'),'下一轮应直接进入循环起点');
- assert.equal(el.from.value,'1');assert(el.reset.textContent.includes('第 3 小节'));
+ assert.equal(el.from.value,'1');assert(el.reset.innerHTML.includes('第 3 小节'));
  run('jumpTo=null;player.currentTime=4+5');el.fwd.onclick();el.fwd.onclick();assert(run('barAt(nowBeat()).number===4'),'循环中下一节不越过本行末尾');
  el.next.onclick();await flush();assert(run('lineLoop===2&&track.lo===16'),'换行后循环跟着走');
  el.lineplay.onclick();await flush();assert(run('lineLoop===null&&!track.loop&&playing'),'结束循环本行后继续播放');
@@ -120,5 +120,19 @@ function sampleData(withGuide=false){
  // 原谱页
  {const D=sampleData();D.scorePages=['data:image/png;base64,AA==','data:image/png;base64,AA=='];const {el,run}=harness(D);
   run("setMode('read')");assert.equal(el.readViewSwitch.hidden,false);el.readPages.onclick();assert.equal(el.readerPages.children.length,2);assert(el.readerParts.hidden);}
- console.log('PASS：v2 播放器——预合成音频、播放/暂停/预备拍、上一节/下一节/回起点、循环本行与手动循环、热切换、声部切换、melodyGuide、只看谱与原谱页（模拟，无声）。');
+ // 排版：原谱一行始终一行，整体按宽度等比例缩放；歌词字号按行宽比例，相碰时只左右微调，不拆排、不横滑
+ {const D=sampleData();D.systemCount=1;D.bars.forEach((b,i)=>{b.system=0;b.left=.1+.15*i;b.right=.1+.15*(i+1)});
+  for(const p of D.parts){p.systems=[p.systems[0]];p.lyrics=[];p.events=[];D.bars.forEach(b=>{for(let j=0;j<4;j++)p.events.push({eventIndex:p.events.length,bar:b.number,beat:b.beat+j,dur:1,midi:60,name:'C4',x:b.left+(j+.5)*.15/4})})}
+  const T=D.parts.find(p=>p.id==='T');T.lyrics=T.events.filter((e,i)=>i%4===0).map(e=>({eventIndex:e.eventIndex,text:'word',verse:1,bar:e.bar,beat:e.beat,endBeat:e.beat+1,system:0,syllabic:'single'}));
+  const {el,run}=harness(D);
+  assert(run('lineFontSize([part()],0,1000)===20&&lineFontSize([part()],0,800)===16'),'歌词字号应随行宽等比例');
+  run("part().lyrics=part().events.map(e=>({eventIndex:e.eventIndex,text:'longword',verse:1,bar:e.bar,beat:e.beat,endBeat:e.beat+1,system:0}))");
+  assert(run('lineFontSize([part()],0,320)<9&&lineFontSize([part()],0,320)>=LYRIC_FLOOR'),'极窄放不下时这一行字号再缩小，但有下限');
+  assert(run("(()=>{const it=[{c:10,w:30},{c:20,w:30},{c:30,w:30}],l=placeRow(it,200,4);return l[0]>=0&&l[1]>=l[0]+34-1e-6&&l[2]>=l[1]+34-1e-6})()"),'单排歌词不重叠');
+  assert(run('placeRow([{c:10,w:150},{c:20,w:150}],200,4)===null'),'放不下时报告失败');
+  assert(run("lineOwn.length===1&&!document.getElementById('lineView').children.some?.(c=>c.className==='seg-head')"),'整行不拆排');
+  assert(!/lyric-score-width|overflow-x:auto|seg-head/.test(html),'不应横滑撑宽，也不应拆排');
+  run("setMode('read')");const view=el.readerParts.children[0].children[1];
+  assert(view.className.includes('line-view'));assert.equal(view.children.length,D.parts.filter(p=>run('reader.parts').includes(p.id)).length,'看谱页每个声部一块、整行一排');}
+ console.log('PASS：v2.6 播放器——预合成音频、播放/暂停/预备拍、上一节/下一节/回起点、循环本行与手动循环、热切换、声部切换、melodyGuide、只看谱与原谱页、整行等比例缩放与歌词不重叠（模拟，无声）。');
 })().catch(e=>{console.error('检查失败：',e.message);process.exit(1)});
