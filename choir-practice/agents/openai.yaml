@@ -1,4 +1,4 @@
 interface:
   display_name: "声部练习室"
-  short_description: "将个人旋律谱或多声部乐谱整理为含简谱、歌词和逐音试听的本地练唱网页"
-  default_prompt: "使用 $choir-practice，把这份乐谱做成本地练唱网页，按实际谱面和我的练习目标整理，保留简谱、歌词、慢练和逐音试听。"
+  short_description: "把旋律谱或多声部乐谱做成本地练唱网页：听着练（含简谱、歌词、逐音试听）与只看谱"
+  default_prompt: "使用 $choir-practice，把这份乐谱做成本地练唱网页，按实际谱面和我的练习目标整理，保留简谱、歌词、慢练和逐音试听；有原谱 PDF 就用 --score-pdf 嵌入，方便只看谱。"

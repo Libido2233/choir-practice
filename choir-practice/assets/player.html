@@ -1,204 +1,429 @@
 <!doctype html>
-<!--
-MIT License
-
-Copyright (c) 2026 Libido2233
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-Third-party piano samples retain their CC BY 3.0 license; attribution below.
--->
 <html lang="zh-CN">
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4f1ea">
 <title>声部练习室</title>
 <style>
-:root{color-scheme:light;--ink:#203e3d;--green:#12695e;--line:#dce5de;--paper:#fffefb}
-html{-webkit-text-size-adjust:100%;text-size-adjust:100%}*{box-sizing:border-box}body{margin:0;background:#f2f4f0;color:var(--ink);font:15px/1.6 "SimSun","Songti SC",serif}
-main{max-width:1120px;margin:auto;padding:26px 24px calc(130px + env(safe-area-inset-bottom,0px))}header{padding:0 4px}h1{overflow-wrap:anywhere;margin:4px 0;font-size:28px;letter-spacing:.02em}h2{font-size:19px;margin:0}.muted{font-size:13px;color:#647b75}
-.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px;margin:16px 0;box-shadow:0 3px 16px #254f3d05}.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-button,select,input[type=number]{font:inherit;color:inherit;border:1px solid #ccdad1;border-radius:10px;padding:8px 12px;background:white;max-width:100%}button{cursor:pointer;min-height:42px;font-weight:500;transition:background .15s,border-color .15s}button:hover{background:#edf5ef;border-color:#82ac97}button:active{background:#dfeee3}button:disabled{opacity:.45;cursor:default}button.primary{background:var(--green);color:white;border-color:var(--green);min-width:140px}button.primary:hover{background:#0b584e}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #76b69b;outline-offset:3px}
-input[type=number]{width:76px}input[type=range],input[type=checkbox]{accent-color:var(--green)}input[type=checkbox]{width:16px;height:16px;vertical-align:middle;margin:0 5px 0 0;cursor:pointer}label{cursor:pointer}
-.practice-choice{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}.practice-choice select{margin-left:8px;background:#edf5ef;border-color:#a9c6b4;font-weight:600;min-width:150px}.tempo-row{margin-top:16px}
-#status{flex:1;min-width:150px}#progress{height:5px;background:#e8eee6;border-radius:9px;margin:18px 0 12px;overflow:hidden}#progress i{display:block;background:var(--green);height:100%;width:0}#pitch{font-size:21px;font-weight:600}
-#mix{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:8px;margin-top:10px}.channel{display:flex;flex-wrap:wrap;align-items:center;gap:9px;background:#f4f7f2;border:1px solid #e4ebe1;border-radius:10px;padding:10px 12px;min-width:0}.channel label{min-width:90px;font-size:14px;white-space:nowrap}.volume-control{display:flex;flex-shrink:0;align-items:center;gap:5px;margin-left:auto}.volume-control button{min-width:36px;min-height:38px;padding:4px 8px;font-size:20px;line-height:1}.volume-control input[type=number]{width:56px;padding:6px 2px;text-align:center;appearance:textfield;-moz-appearance:textfield;font-variant-numeric:tabular-nums}.volume-control input::-webkit-inner-spin-button,.volume-control input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}.channel output{font-size:12px;color:#597167}
-.toolbar{min-width:0;justify-content:space-between;margin-bottom:16px}.toolbar button{font-size:14px}
-.focus{background:white;border:1px solid #a9c4b4;border-radius:12px;padding:14px}.context{background:#f5f7f2;border:1px solid #e3e9df;border-radius:12px;padding:14px;margin-top:14px}.heading{overflow-wrap:anywhere;font-size:14px;margin-bottom:8px;color:#627a6e}.part-label{font-size:13px;font-weight:600;margin:12px 0 4px}.part-label.solo{color:#59788a}#ownLabel{border-top:1px solid #dce7dd;padding-top:10px;color:var(--green)}
-.staff-scroll{overflow:hidden;border-radius:6px;background:white;min-width:0}.staff-content{width:100%;min-width:0;position:relative}.scoreline{position:relative}.scoreline img{display:block;width:100%}.shade{position:absolute;top:0;height:100%;background:#0c8d7114;pointer-events:none}.cursor{position:absolute;top:20%;height:60%;width:3px;background:#d07020;display:none;pointer-events:none}.numbers svg{display:block;width:100%;height:auto}.numbers .sounding text{fill:#c06a12}.lyrics{container-type:inline-size}@supports(font-size:1cqw){.lyrics .lyric-verse{font-size:clamp(10px,2cqw,21px)}}.lyric-verse{position:relative;height:32px;margin:3px 0 5px;font:clamp(10px,2vw,21px)/1.5 "SimSun","Songti SC",serif;color:#203e3d}.lyric-word{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}.lyric-word.sounding{color:#b75f0d;font-weight:bold}.lyric-extension{position:absolute;top:25px;border-bottom:1px solid currentColor}
-#barlinks{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}#barlinks button{font-size:13px;padding:3px 10px;min-height:32px;border-radius:7px}#barlinks button.active{background:var(--green);color:white}.note-preview{background:#edf5ef;border:1px solid #a8c6b1;border-radius:12px;padding:16px}.note-preview .section-title{font-size:19px;margin-bottom:14px}#pitchlist{display:grid;gap:12px}.note-group{background:#fffefb;border:1px solid #d1e0d4;border-radius:10px;padding:12px}.note-group-title{font-size:13px;color:#587467;margin-bottom:9px}.note-buttons{display:flex;flex-wrap:wrap;gap:8px}#pitchlist button{font-size:15px;font-weight:600;padding:10px 14px;min-width:80px;min-height:46px;background:white;border-color:#75a88b;color:#125d43;box-shadow:0 2px 0 #c6dccc}#pitchlist button:hover{background:#dcefe1;border-color:#376f50}#pitchlist button:active{box-shadow:none;transform:translateY(1px)}.badge{background:#eaf2e8;border-radius:7px;padding:3px 9px;font-size:13px}
-.practice-section{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}.section-title{font-size:15px;font-weight:600;color:var(--green);margin:0 0 10px}#draft{background:#fff0d5;padding:12px;border-radius:8px;margin:14px 0}[hidden]{display:none!important}
-@media(max-width:650px){main{padding:16px 10px calc(180px + env(safe-area-inset-bottom,0px))}.card{padding:14px;border-radius:14px}h1{font-size:24px}.focus,.context{padding:8px}.channel{padding:9px 10px}.channel label{min-width:85px}#pitch{font-size:19px}.toolbar{gap:10px}.toolbar>.row{gap:6px}.toolbar button{padding:7px 9px;min-height:38px}.practice-choice select{min-width:130px}}
-.playback-dock{position:fixed;bottom:0;left:0;right:0;z-index:50;background:#fffefbf5;border-top:1px solid #c7d9cc;box-shadow:0 -4px 20px #203e3d0d;padding:12px 22px calc(12px + env(safe-area-inset-bottom,0px))}.playback-dock>.row{max-width:1072px;margin:auto}.playback-dock #status{min-width:120px}@media(max-width:650px){.playback-dock{padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px))}.playback-dock>.row{gap:7px}.playback-dock button{font-size:14px;padding:8px 10px}.playback-dock button.primary{min-width:126px}.playback-dock #status{flex-basis:100%;font-size:12px}}
+:root{color-scheme:light;--bg:#f4f1ea;--paper:#fffdf8;--ink:#1e2b29;--soft:#5f6f6a;--faint:#8a958f;--line:#e7e1d6;--accent:#0f6b5f;--accent-2:#0b564c;--accent-soft:#e4f0ea;--warm:#d2752b;--warm-soft:#fbeadb;--radius:18px;--ui:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;--serif:"Songti SC","STSong","Noto Serif SC","SimSun",serif}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--ui);-webkit-font-smoothing:antialiased}
+main{max-width:1080px;margin:auto;padding:28px 20px calc(190px + env(safe-area-inset-bottom,0px))}
+[hidden]{display:none!important}.muted{font-size:13px;color:var(--faint)}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* 标题 */
+.hero{padding:6px 4px 10px}.eyebrow{font-size:12px;letter-spacing:.18em;color:var(--accent);font-weight:600}
+h1{margin:4px 0 2px;font:600 30px/1.25 var(--serif);letter-spacing:.02em;overflow-wrap:anywhere}.sub{margin:0;color:var(--soft);font-size:13px}
+#draft{background:var(--warm-soft);color:#7a4313;padding:10px 12px;border-radius:12px;margin:12px 0 0;font-size:13px}
+/* 卡片 */
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:14px 0;box-shadow:0 1px 2px #2a24180a,0 8px 24px #2a24180a}
+.card-title{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 12px;font-size:13px;font-weight:600;color:var(--soft);letter-spacing:.04em}.card-title .hint{font-weight:400;color:var(--faint);letter-spacing:0}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+/* 控件 */
+button,select,input[type=number]{font:inherit;color:inherit;border:1px solid var(--line);border-radius:12px;padding:8px 14px;background:#fff;max-width:100%}
+button{cursor:pointer;min-height:42px;font-weight:500;transition:background .15s,border-color .15s,transform .05s}button:hover{background:#f6f3ec}button:active{transform:translateY(1px)}button:disabled{opacity:.4;cursor:default;transform:none}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}button.primary:hover{background:var(--accent-2)}
+button.soft{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}button.soft:hover{background:#d6e9df}button.soft.on{background:var(--warm-soft);color:#9a4f14}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #7fbfa9;outline-offset:2px}
+select{appearance:none;-webkit-appearance:none;padding-right:34px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%235f6f6a' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;cursor:pointer}
+input[type=number]{width:64px;padding:8px 6px;text-align:center;font-variant-numeric:tabular-nums;appearance:textfield;-moz-appearance:textfield}input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:none;width:40px;height:24px;margin:0;border-radius:999px;background:#d8d2c6;position:relative;cursor:pointer;transition:background .2s;vertical-align:middle}
+input[type=checkbox]::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0003;transition:transform .2s}
+input[type=checkbox]:checked{background:var(--accent)}input[type=checkbox]:checked::after{transform:translateX(16px)}
+label{cursor:pointer}.toggle{display:inline-flex;align-items:center;gap:9px;font-weight:500}
+/* 我练 + 混音 */
+.part-pick{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:600;margin-bottom:18px}.part-pick select{flex:1;max-width:260px;font-size:17px;font-weight:600;background-color:var(--accent-soft);border-color:#c5ded2;color:var(--accent-2)}
+#mix{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:8px}
+.channel{display:flex;align-items:center;gap:10px;background:#faf8f3;border:1px solid #efeae0;border-radius:14px;padding:8px 10px 8px 12px;min-width:0;transition:opacity .2s}
+.channel label{display:flex;align-items:center;gap:10px;flex:1;min-width:0;font-weight:500;white-space:nowrap}
+.channel:has(input[type=checkbox]:not(:checked)) .volume-control{opacity:.45}
+.volume-control{display:flex;flex-shrink:0;align-items:center;gap:2px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:2px}
+.volume-control button{border:0;min-width:34px;min-height:34px;padding:0;font-size:18px;line-height:1;border-radius:10px;background:transparent;color:var(--soft)}.volume-control button:hover{background:#f2eee6}
+.volume-control input[type=number]{border:0;width:40px;padding:4px 0;background:transparent;font-weight:600}.volume-control output{font-size:12px;color:var(--faint);margin:0 4px 0 -2px}
+/* 速度与循环 */
+.setting{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;padding:12px 0;border-top:1px solid #f0ebe2}.setting:first-of-type{border-top:0;padding-top:0}.setting:last-child{padding-bottom:0}
+.setting-name{font-weight:600;min-width:52px}.tempo{display:flex;align-items:center;gap:6px;color:var(--soft);font-size:13px}.tempo input{color:var(--ink);font-weight:600;font-size:16px}
+.seg{display:inline-flex;background:#f2eee6;border-radius:12px;padding:3px;gap:3px}.seg button{border:0;background:transparent;min-height:36px;padding:6px 12px;border-radius:9px;font-size:14px}.seg button:hover{background:#fff}
+.range-inputs{display:flex;align-items:center;gap:6px;color:var(--soft);font-size:14px}.range-inputs input{width:56px}
+.setting:has(#loop:not(:checked)) .range-inputs{opacity:.5}.flags{display:flex;gap:22px;flex-wrap:wrap}
+/* 谱面 */
+.score-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+h2{margin:0;font-size:18px;font-weight:600}
+.line-nav{display:inline-flex;align-items:center;background:#f2eee6;border-radius:12px;padding:3px}.line-nav button{border:0;background:transparent;min-width:44px;min-height:38px;padding:0 10px;font-size:20px;border-radius:9px}.line-nav button:hover:not(:disabled){background:#fff}#lineLabel{min-width:56px;text-align:center;font-size:13px;color:var(--soft);font-variant-numeric:tabular-nums}
+.score-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.score-tools label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--soft);white-space:nowrap;min-width:0}.score-tools select{min-width:0}.score-tools select{font-size:14px;padding-top:7px;padding-bottom:7px}
+.focus{background:#fff;border:1px solid #dcebe3;border-radius:16px;padding:14px;box-shadow:inset 0 0 0 3px #f3f9f6}
+.context{background:#faf8f3;border:1px solid #efeae0;border-radius:16px;padding:14px;margin-top:12px}
+.heading{overflow-wrap:anywhere;font-size:13px;margin-bottom:10px;color:var(--faint)}.context .heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.context .heading button{min-height:34px;padding:4px 12px;font-size:13px}
+#barlinks{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}#barlinks button{font-size:13px;padding:3px 12px;min-height:34px;border-radius:999px;background:#f6f3ec;border-color:transparent;color:var(--soft)}#barlinks button.active{background:var(--accent);color:#fff}
+.part-label{font-size:12px;font-weight:600;letter-spacing:.04em;margin:12px 0 4px;color:var(--soft)}.part-label.solo{color:#5a7a8c}#ownLabel{border-top:1px dashed #dbe8e1;padding-top:10px;color:var(--accent)}
+.staff-scroll{overflow:hidden;border-radius:8px;background:#fff;min-width:0}.staff-content{width:100%;min-width:0;position:relative}.staff-content img{display:block;width:100%;height:auto}.scoreline{position:relative}.scoreline img{display:block;width:100%}
+.shade{position:absolute;top:0;height:100%;background:#0f8d7116;border-radius:4px;pointer-events:none}.cursor{position:absolute;top:18%;height:64%;width:3px;border-radius:2px;background:var(--warm);display:none;pointer-events:none;box-shadow:0 0 0 3px #d2752b22}
+.numbers svg{display:block;width:100%;height:auto}.numbers .sounding text{fill:#c06a12}
+.lyrics{container-type:inline-size}@supports(font-size:1cqw){.lyrics .lyric-verse{font-size:clamp(10px,2cqw,21px)}}.lyric-verse{position:relative;height:32px;margin:3px 0 5px;font:clamp(10px,2vw,21px)/1.5 var(--serif);color:var(--ink)}.lyric-word{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}.lyric-word.sounding{color:#b75f0d;font-weight:bold}.lyric-extension{position:absolute;top:25px;border-bottom:1px solid currentColor}
+/* 逐个听音 */
+#pitchlist{display:grid;gap:10px}.note-group{border-top:1px solid #f0ebe2;padding-top:10px}.note-group:first-child{border-top:0;padding-top:0}.note-group-title{font-size:12px;color:var(--faint);margin-bottom:8px}.note-buttons{display:flex;flex-wrap:wrap;gap:8px}
+#pitchlist button{font-size:15px;font-weight:600;padding:8px 14px;min-width:72px;min-height:44px;background:#fff;border-color:#cfe3d8;color:var(--accent-2)}#pitchlist button:hover{background:var(--accent-soft)}
+/* 底部播放条 */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 12px calc(10px + env(safe-area-inset-bottom,0px))}
+.dock-inner{max-width:1080px;margin:auto;background:#fffdf8ee;-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border:1px solid var(--line);border-radius:22px;box-shadow:0 10px 30px #2a241824,0 1px 2px #2a24180f;padding:12px 16px 14px}
+.dock-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.where{display:flex;flex-direction:column;min-width:0;line-height:1.3}#seekLabel{font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}#status{font-size:12px;color:var(--soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.seek-wrap{position:relative;margin:4px 0 10px}#loopband{position:absolute;top:50%;height:12px;margin-top:-6px;border-radius:6px;background:#d2752b33;border:1px solid #d2752b66;pointer-events:none}
+#seek{-webkit-appearance:none;appearance:none;display:block;width:100%;height:30px;margin:0;background:transparent;cursor:pointer;position:relative}
+#seek::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(var(--accent),var(--accent)) 0/var(--p,0%) 100% no-repeat,#e5dfd3}
+#seek::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-8px;border-radius:50%;background:#fff;border:2px solid var(--accent);box-shadow:0 2px 6px #0002}
+#seek::-moz-range-track{height:6px;border-radius:3px;background:#e5dfd3}#seek::-moz-range-progress{height:6px;border-radius:3px;background:var(--accent)}#seek::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--accent)}
+.dock-row{display:flex;align-items:center;gap:8px}.dock-row #reset,.dock-row .step{flex:none;font-size:14px;padding:8px 12px;min-height:46px;background:#f6f3ec;border-color:transparent;white-space:nowrap}.dock-row .step{min-width:46px}.step .ic{font-size:18px;line-height:1}
+.dock-row #reset{margin-right:auto}.dock-row #play{flex:0 1 200px;min-width:108px;min-height:48px;border-radius:999px;font-size:17px;box-shadow:0 4px 14px #0f6b5f40}
+#pitch{flex:none;max-width:55%;font-size:20px;font-weight:700;color:var(--accent-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:650px){main{padding:18px 12px calc(200px + env(safe-area-inset-bottom,0px))}.card{padding:16px;border-radius:16px}h1{font-size:26px}.focus,.context{padding:10px}.dock{padding:0 8px calc(8px + env(safe-area-inset-bottom,0px))}.dock-inner{padding:10px 12px 12px;border-radius:20px}.dock-row{gap:6px}.dock-row #reset,.dock-row .step{padding:8px 10px;font-size:13px}.dock-row #play{min-width:96px}#pitch{font-size:18px}.score-tools{gap:8px}.score-tools label{flex:1}.score-tools select{flex:1}#lineplay{flex:1}}
+@media(max-width:439px){.step .tx{display:none}}
+@media(max-width:360px){.dock-row #reset{font-size:12px;padding:8px 7px}.dock-row #play{min-width:84px;font-size:15px}}
+/* 两种用法：听着练 / 只看谱 */
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:16px;background:#ebe6dc;padding:5px;border-radius:18px}
+.mode-tabs button{display:flex;align-items:center;justify-content:center;gap:10px;border:0;background:transparent;border-radius:14px;padding:10px 12px;min-height:54px;color:var(--soft)}
+.mode-tabs button:hover{background:#f6f2ea}.mode-tabs button[aria-selected=true]{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px #2a24181f}
+.mode-tabs svg{flex:none;width:26px;height:26px}#modeListen[aria-selected=true] svg{color:var(--accent)}#modeRead[aria-selected=true] svg{color:var(--read)}
+.mode-tabs b{font-size:17px}
+:root{--read:#2f4b6e;--read-soft:#e6ecf4}
+body[data-mode=read] main{padding-bottom:calc(48px + env(safe-area-inset-bottom,0px))}
+.reader-bar{padding:14px 16px}
+.reader-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px}.reader-note{font-size:12px;color:var(--faint)}
+.reader-bar .seg button[aria-pressed=true]{background:#fff;color:var(--read);font-weight:600;box-shadow:0 1px 2px #2a24181a}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.chip{min-height:38px;border-radius:999px;padding:6px 14px;font-size:14px;background:#fff}
+.chip[aria-pressed=true]{background:var(--read);border-color:var(--read);color:#fff}.chip-option{border-style:dashed}.chip-option[aria-pressed=true]{background:var(--read-soft);border:1px solid #c6d3e4;color:var(--read)}
+.read-line{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px 14px 14px;margin:12px 0;content-visibility:auto;contain-intrinsic-size:auto 360px}
+.read-line-head{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--faint)}.read-line-head b{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:8px;background:var(--read-soft);color:var(--read);font-size:12px}
+.read-line .part-label{color:var(--read)}.read-line .part-label.solo{color:#5a7a8c}.reader-empty{text-align:center;color:var(--faint);padding:40px 0}
+.page{margin:12px 0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}.page img{display:block;width:100%;height:auto}.page figcaption{font-size:12px;color:var(--faint);text-align:center;padding:6px}
 </style>
 <main>
-<header><h1 id="title"></h1><div id="draft" hidden></div></header>
-<section class="card" aria-label="播放与声部">
-
-<div class="row practice-choice"><label>我练 <select id="part"></select></label></div>
-<div class="mix-section"><div class="heading" style="margin-top:16px">听哪些声部</div><div id="mix"></div></div>
-<div class="row tempo-row"><label>速度 <input id="tempo" type="number" min="20" max="300"> BPM</label><button id="slow">慢练</button><button id="normal">原速</button></div>
-<section class="practice-section" aria-label="分段练习"><h3 class="section-title">分段练习</h3><div class="row" style="margin-top:10px"><label>从第 <input id="from" type="number" min="1" value="1"> 小节</label><label>到第 <input id="to" type="number" min="1"> 小节</label><label><input id="loop" type="checkbox"> 循环</label><label><input id="countin" type="checkbox" checked> 预备拍</label><label><input id="click" type="checkbox"> 节拍器</label></div></section>
-<div id="progress"><i></i></div><div class="row"><span id="location" class="badge"></span><span id="pitch">准备开始</span></div>
+<header class="hero"><div class="eyebrow">声部练习室</div><h1 id="title"></h1><p id="sub" class="sub"></p><div id="draft" hidden></div>
+<nav class="mode-tabs" role="tablist" aria-label="使用方式">
+<button id="modeListen" role="tab" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg><b>听着练</b></button>
+<button id="modeRead" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 6c-2-1.5-5-2-8-1.5v14c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-14c-3-.5-6 0-8 1.5z"/><path d="M12 6v14"/></svg><b>只看谱</b></button>
+</nav></header>
+<div id="listenView">
+<section class="card" aria-label="声部与混音">
+<label class="part-pick">我练<select id="part"></select></label>
+<div class="card-title">听哪些声部</div>
+<div id="mix"></div>
 </section>
-<section class="card" aria-label="当前行与下一行谱面">
-<div class="row toolbar"><h2 id="scoreTitle"></h2><div class="row"><button id="prev">← 上一行</button><span id="lineLabel" class="muted"></span><button id="next">下一行 →</button><button id="lineplay">只练当前行</button></div></div>
-<div class="row" style="margin-bottom:14px"><label for="referencePart">参照声部</label><select id="referencePart"></select></div>
+<section class="card" aria-label="速度与循环">
+<div class="setting"><span class="setting-name">速度</span><div class="row"><span class="tempo"><input id="tempo" type="number" min="20" max="300" inputmode="numeric" aria-label="速度 BPM"> BPM</span><span class="seg"><button id="slow">慢练</button><button id="normal">原速</button></span></div></div>
+<div class="setting"><label class="toggle"><input id="loop" type="checkbox"> 循环</label><span class="range-inputs">第 <input id="from" type="number" min="1" value="1" inputmode="numeric" aria-label="循环起始小节"> – <input id="to" type="number" min="1" inputmode="numeric" aria-label="循环结束小节"> 小节</span></div>
+<div class="setting"><div class="flags"><label class="toggle"><input id="countin" type="checkbox" checked> 预备拍</label><label class="toggle"><input id="click" type="checkbox"> 节拍器</label></div></div>
+</section>
+<section class="card" aria-label="谱面">
+<div class="score-head"><h2 id="scoreTitle"></h2><div class="line-nav"><button id="prev" aria-label="上一行">‹</button><span id="lineLabel"></span><button id="next" aria-label="下一行">›</button></div></div>
+<div class="score-tools"><label>参照 <select id="referencePart"></select></label><button id="lineplay" class="soft" aria-pressed="false">↻ 循环本行</button></div>
 <div class="focus"><div class="heading" id="currentCaption"></div><div id="barlinks"></div><div id="referenceRows"></div><div id="ownLabel" class="part-label"></div><div id="ownScroll" class="staff-scroll"><div class="staff-content"><div class="scoreline"><img id="score" alt="当前行的声部谱"><div id="shade" class="shade"></div><div id="cursor" class="cursor"></div></div><div id="currentLyrics" class="lyrics"></div><div id="currentNumbers" class="numbers"></div></div></div></div>
-<div id="nextContext" class="context"><div class="row heading" style="justify-content:space-between"><span id="nextCaption"></span><div class="row"><button id="nextFocus">切到下一行</button></div></div><div class="staff-scroll"><div class="staff-content"><div class="scoreline"><img id="nextScore" alt="下一行的声部谱"></div><div id="nextLyrics" class="lyrics"></div><div id="nextNumbers" class="numbers"></div></div></div></div>
-<section class="practice-section note-preview" aria-label="逐个听音"><h3 class="section-title">逐个听音</h3><div id="pitchlist"></div></section>
+<div id="nextContext" class="context"><div class="heading"><span id="nextCaption"></span><button id="nextFocus">切到下一行 ›</button></div><div class="staff-scroll"><div class="staff-content"><div class="scoreline"><img id="nextScore" alt="下一行的声部谱"></div><div id="nextLyrics" class="lyrics"></div><div id="nextNumbers" class="numbers"></div></div></div></div>
 </section>
+<section class="card" aria-label="逐个听音"><div class="card-title">逐个听音</div><div id="pitchlist"></div></section>
+</div>
+<div id="readView" hidden>
+<section class="card reader-bar" aria-label="看谱设置"><div class="reader-top"><span id="readViewSwitch" class="seg"><button id="readByParts" aria-pressed="true">分声部</button><button id="readPages" aria-pressed="false">原谱</button></span></div><div id="readerChips" class="chips" role="group" aria-label="显示哪些声部"></div></section>
+<div id="readerParts"></div><div id="readerPages" hidden></div>
+</div>
 </main>
-<div class="playback-dock" role="region" aria-label="播放控制"><div class="row"><button class="primary" id="play">▶ 开始练习</button><button id="reset">回到起点</button><span id="status" role="status" class="muted"></span></div></div>
+<div id="dock" class="dock" role="region" aria-label="播放控制"><div class="dock-inner">
+<div class="dock-top"><div class="where"><span id="seekLabel">第 1 小节</span><span id="status" role="status"></span></div><span id="pitch">准备开始</span><span id="location" class="visually-hidden"></span></div>
+<div class="seek-wrap"><div id="loopband" hidden></div><input id="seek" type="range" min="0" aria-label="拖动到某一小节"></div>
+<div class="dock-row"><button id="reset" aria-label="回到起点：循环时回循环起点，否则回第 1 小节">⏮ 回第 1 小节</button><button id="back" class="step" aria-label="上一小节"><span class="ic">‹</span><span class="tx"> 上一节</span></button><button class="primary" id="play">▶ 播放</button><button id="fwd" class="step" aria-label="下一小节"><span class="tx">下一节 </span><span class="ic">›</span></button></div>
+</div><audio id="player" playsinline preload="auto"></audio><audio id="preview" playsinline></audio></div>
 <!-- Piano: Salamander Grand Piano, Alexander Holm. CC BY 3.0 https://creativecommons.org/licenses/by/3.0/ . Source https://github.com/Tonejs/audio/tree/master/salamander . Pitch shifting and envelopes applied. -->
 <script>
 'use strict';
 const DATA=__CHOIR_DATA__,PIANO=__PIANO_SAMPLES__;
+// 声部练习室播放器 v2
+// · 听着练：把当前混音（含预备拍、节拍器）用纯 JS 合成为一段 WAV，交给一个 <audio> 播放。
+//   iPhone 静音键下有声、锁屏/切后台继续、可用系统锁屏控件；全页只有一套播放状态。
+// · 只看谱：不出声，自选声部纵向翻谱；有原谱页时可看整页原谱。
 const $=id=>document.getElementById(id),N=DATA.bars.length;
 const text=(id,value)=>{$(id).textContent=value};
-let referenceChoice='auto';
-let referenceBeat=0;
-const mixOverrides={volumes:{},audible:{}};
-let selected=DATA.defaultPart,viewSystem=0,currentBar=1,ctx,master,loading,buffers={},noiseBuffer;
-let playing=false,nodes=[],timer=null,origin=0,startBeat=0,endBeat=DATA.totalBeats,resumeBeat=null,runTempo=DATA.bpm;
-const volumes={},gains={},sliders={},outputs={},audible={},listenChecks={};
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+let referenceChoice='auto',referenceBeat=0,selected=DATA.defaultPart,viewSystem=0,currentBar=1;
+const volumes={},sliders={},outputs={},audible={},listenChecks={},mixOverrides={volumes:{},audible:{}};
 const part=()=>DATA.parts.find(p=>p.id===selected);
 const systemBars=sid=>DATA.bars.filter(b=>b.system===sid);
-function guidePart(beat){const segment=DATA.melodyGuide?.find(s=>s.startBeat<=beat&&beat<s.endBeat);return segment?.part||null}
-function guidedMix(id,beat){const ref=guidePart(beat);return {volume:mixOverrides.volumes[id]??(id===selected?100:id===ref?50:30),on:mixOverrides.audible[id]??(id===selected||id===ref)}}
-function updateGain(id){if(!gains[id])return;const g=gains[id].gain;if(!DATA.melodyGuide){g.value=audible[id]?volumes[id]/100:0;return}const beat=playing?Math.max(startBeat,startBeat+(ctx.currentTime-origin)*runTempo/60):referenceBeat;const value=b=>{const m=guidedMix(id,b);return m.on?m.volume/100:0};g.cancelScheduledValues(ctx.currentTime);g.setValueAtTime(value(beat),ctx.currentTime);if(playing)for(const s of DATA.melodyGuide)if(s.startBeat>beat&&s.startBeat<endBeat)g.setValueAtTime(value(s.startBeat),origin+(s.startBeat-startBeat)*60/runTempo)}
-function syncGuidedMix(beat){if(!DATA.melodyGuide)return;for(const p of DATA.parts){const m=guidedMix(p.id,beat);audible[p.id]=m.on;volumes[p.id]=m.volume;listenChecks[p.id].checked=m.on;sliders[p.id].value=m.volume;outputs[p.id].textContent='%'}}
-function editVolume(id,value){if(DATA.melodyGuide)mixOverrides.volumes[id]=Math.max(0,Math.min(100,Number(value)||0));setVolume(id,value);savePreferences()}
-function editAudible(id,value){if(DATA.melodyGuide)mixOverrides.audible[id]=!!value;setAudible(id,value);savePreferences()}
-function setVolume(id,value){volumes[id]=Math.max(0,Math.min(100,Number(value)||0));sliders[id].value=volumes[id];outputs[id].textContent='%';updateGain(id)}
-function setAudible(id,value){audible[id]=!!value;listenChecks[id].checked=!!value;updateGain(id)}
-function initialMix(){if(DATA.melodyGuide){mixOverrides.volumes={};mixOverrides.audible={};syncGuidedMix(referenceBeat);for(const p of DATA.parts)updateGain(p.id);return}const practicingSolo=part().role==='solo';for(const p of DATA.parts){setAudible(p.id,p.id===selected||(!practicingSolo&&p.role==='solo'));setVolume(p.id,p.id===selected?100:!practicingSolo&&p.role==='solo'?50:30)}}
-async function audio(){
- if(!ctx){const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)throw new Error('浏览器不支持音频');ctx=new Audio({latencyHint:"playback"});master=ctx.createGain();master.gain.value=.5;const compressor=ctx.createDynamicsCompressor();master.connect(compressor);compressor.connect(ctx.destination);for(const p of DATA.parts){const g=ctx.createGain();g.gain.value=audible[p.id]?volumes[p.id]/100:0;g.connect(master);gains[p.id]=g}noiseBuffer=ctx.createBuffer(1,ctx.sampleRate*.3,ctx.sampleRate);const samples=noiseBuffer.getChannelData(0);for(let i=0;i<samples.length;i++)samples[i]=Math.random()*2-1}
- await ctx.resume();
- if(!loading)loading=Promise.all(Object.entries(PIANO).map(async([key,b64])=>{buffers[key]=await ctx.decodeAudioData(Uint8Array.from(atob(b64),c=>c.charCodeAt(0)).buffer)})).catch(e=>{loading=null;throw e});
- await loading;
-}
-function tone(pitch,when,duration,id,preview=false){
- const key=Object.keys(buffers).map(Number).sort((a,b)=>Math.abs(a-pitch)-Math.abs(b-pitch))[0];const source=ctx.createBufferSource(),g=ctx.createGain();source.buffer=buffers[key];source.playbackRate.value=2**((pitch-key)/12);source.connect(g);g.connect(preview?master:gains[id]);g.gain.setValueAtTime(0,when);g.gain.linearRampToValueAtTime(.65,when+.005);g.gain.setValueAtTime(.65,when+Math.max(.006,duration));g.gain.linearRampToValueAtTime(0,when+duration+.18);source.start(when);source.stop(when+duration+.19);trackSource(source,g);
-}
-function drum(key,when,id,preview=false){const g=ctx.createGain();g.connect(preview?master:gains[id]);let source,length;if(key===35||key===36){source=ctx.createOscillator();source.frequency.setValueAtTime(130,when);source.frequency.exponentialRampToValueAtTime(45,when+.14);length=.2}else{source=ctx.createBufferSource();source.buffer=noiseBuffer;const filter=ctx.createBiquadFilter();filter.type=(key===42||key===44||key===46)?'highpass':'bandpass';filter.frequency.value=filter.type==='highpass'?6500:1500;source.connect(filter);filter.connect(g);length=filter.type==='highpass'?.07:.18}if(source.frequency)source.connect(g);g.gain.setValueAtTime(.6,when);g.gain.exponentialRampToValueAtTime(.001,when+length);source.start(when);source.stop(when+length+.01);trackSource(source,g)}
-function click(when,strong){const source=ctx.createOscillator(),g=ctx.createGain();source.frequency.value=strong?1200:850;source.connect(g);g.connect(master);g.gain.setValueAtTime(.13,when);g.gain.exponentialRampToValueAtTime(.001,when+.055);source.start(when);source.stop(when+.06);trackSource(source,g)}
-// BEGIN CHOIR AUDIO SCHEDULER v1
-let scheduleTimer=null,audioQueue=[],queueIndex=0;
-const AUDIO_AHEAD=1.5;
-function playbackPosition(beat){return typeof performanceAt==='function'?performanceAt(beat):beat}
-function trackSource(source,gain){
- nodes.push(source);
- source.onended=()=>{const i=nodes.indexOf(source);if(i>=0)nodes.splice(i,1);source.disconnect?.();gain.disconnect?.()};
-}
-function prepareAudioQueue(){
- const sec=60/runTempo,base=playbackPosition(startBeat);audioQueue=[];queueIndex=0;
- for(const p of DATA.parts)for(const e of p.sounds){
-  const a=Math.max(startBeat,e.beat),b=Math.min(endBeat,e.beat+e.dur);if(b<=a)continue;
-  const percussion=p.role==='percussion'||e.percussion;if(percussion&&e.beat<startBeat)continue;
-  audioQueue.push({when:origin+(playbackPosition(a)-base)*sec,duration:(playbackPosition(b)-playbackPosition(a))*sec*(e.staccato?.55:1),id:p.id,midi:e.midi,percussion});
- }
- if($('click').checked)for(const b of DATA.bars){
-  const pulse=4/b.beatType,phase=(b.pickupPhase||0)%pulse;
-  for(let offset=phase?pulse-phase:0;offset<b.dur-.00001;offset+=pulse){const beat=b.beat+offset;if(startBeat<=beat&&beat<endBeat)audioQueue.push({when:origin+(playbackPosition(beat)-base)*sec,click:true,strong:offset===0})}
- }
- audioQueue.sort((a,b)=>a.when-b.when);
- scheduleAudio();scheduleTimer=setInterval(scheduleAudio,40);
-}
-function scheduleAudio(){
- if(!playing)return;
- const now=ctx.currentTime,horizon=now+AUDIO_AHEAD;
- while(queueIndex<audioQueue.length&&audioQueue[queueIndex].when<=horizon){
-  const e=audioQueue[queueIndex++];
-  if(e.click){if(e.when>=now-.02)click(Math.max(e.when,now+.005),e.strong);continue}
-  if(e.when+e.duration<=now+.005)continue;
-  const when=Math.max(e.when,now+.005),duration=e.duration-(when-e.when);
-  if(e.percussion){if(e.when>=now-.04)drum(e.midi,when,e.id)}else tone(e.midi,when,duration,e.id);
- }
-}
-// END CHOIR AUDIO SCHEDULER v1
+const barAt=beat=>DATA.bars.find(b=>b.beat<=beat+1e-6&&beat+1e-6<b.beat+b.dur)||DATA.bars.at(-1);
+const perf=beat=>typeof performanceAt==='function'?performanceAt(beat):beat;   // 各曲可注入变速/摇摆时轴
+const written=pos=>typeof writtenAt==='function'?writtenAt(pos):pos;
+const tempo=()=>clamp(Math.round(Number($('tempo').value)||DATA.bpm),20,300);
+const countBeats=bar=>bar.beats*(4/bar.beatType);
+const escapeHTML=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
 
-function kill(){clearInterval(scheduleTimer);scheduleTimer=null;audioQueue=[];queueIndex=0;for(const n of nodes){try{n.stop()}catch{}}nodes=[];clearInterval(timer);timer=null}
-function stop(keep=false){resumeBeat=keep&&playing?Math.max(startBeat,Math.min(endBeat,startBeat+(ctx.currentTime-origin)*runTempo/60)):null;playing=false;kill();text('play',keep?'▶ 继续练习':'▶ 开始练习');$('cursor').style.display='none';for(const id of ['currentNumbers','currentLyrics'])for(const n of $(id).querySelectorAll('[data-event]'))n.classList.remove('sounding')}
-function range(){const a=Math.max(1,Math.min(N,Math.round(Number($('from').value)||1))),b=Math.max(a,Math.min(N,Math.round(Number($('to').value)||N)));$('from').value=a;$('to').value=b;return [DATA.bars[a-1].beat,DATA.bars[b-1].beat+DATA.bars[b-1].dur,a,b]}
-async function play(){
- if(playing){stop(true);text('status','已暂停');return}
- $('play').disabled=true;text('status','准备钢琴音色…');
- try{await audio();kill();const [lo,hi,a]=range();startBeat=resumeBeat!==null&&resumeBeat>=lo&&resumeBeat<hi?resumeBeat:lo;endBeat=hi;runTempo=Math.max(20,Math.min(300,Number($('tempo').value)||DATA.bpm));const sec=60/runTempo,bar=DATA.bars[a-1],step=4/bar.beatType,pre=$('countin').checked?bar.beats*step:0;origin=ctx.currentTime+.12+pre*sec;playing=true;resumeBeat=null;text('play','Ⅱ 暂停');for(let b=0;b<pre-.00001;b+=step)click(origin-(pre-b)*sec,b===0);
- prepareAudioQueue();
- if(DATA.melodyGuide)for(const p of DATA.parts)updateGain(p.id);timer=setInterval(tick,80);tick();
- }catch(e){stop();text('status','音频未能启动，请点击重试或用系统浏览器打开。');console.error(e)}finally{$('play').disabled=false}
+// ---------- 混音 ----------
+// melodyGuide：按拍切换旋律参照，默认自己100%、当段参照50%；手动改动记入 mixOverrides
+function guidePart(beat){const s=DATA.melodyGuide?.find(s=>s.startBeat<=beat&&beat<s.endBeat);return s?.part||null}
+function guidedMix(id,beat){const ref=guidePart(beat);return {volume:mixOverrides.volumes[id]??(id===selected?100:id===ref?50:30),on:mixOverrides.audible[id]??(id===selected||id===ref)}}
+function syncGuidedMix(beat){if(!DATA.melodyGuide)return;for(const p of DATA.parts){const m=guidedMix(p.id,beat);audible[p.id]=m.on;volumes[p.id]=m.volume;listenChecks[p.id].checked=m.on;sliders[p.id].value=m.volume;outputs[p.id].textContent='%'}}
+function setVolume(id,value){volumes[id]=clamp(Number(value)||0,0,100);sliders[id].value=volumes[id];outputs[id].textContent='%';changed()}
+function setAudible(id,value){audible[id]=!!value;listenChecks[id].checked=!!value;changed()}
+function editVolume(id,value){if(DATA.melodyGuide)mixOverrides.volumes[id]=clamp(Number(value)||0,0,100);setVolume(id,value);savePreferences()}
+function editAudible(id,value){if(DATA.melodyGuide)mixOverrides.audible[id]=!!value;setAudible(id,value);savePreferences()}
+function initialMix(){
+ if(DATA.melodyGuide){mixOverrides.volumes={};mixOverrides.audible={};syncGuidedMix(referenceBeat);changed();return}
+ const solo=part().role==='solo';for(const p of DATA.parts){setAudible(p.id,p.id===selected||(!solo&&p.role==='solo'));setVolume(p.id,p.id===selected?100:!solo&&p.role==='solo'?50:30)}
 }
-function tick(){
- const beat=startBeat+(ctx.currentTime-origin)*runTempo/60;
- if(beat<startBeat){text('status','预备…');return}
- if(beat>=endBeat){const loop=$('loop').checked;stop();text('status',loop?'再次练习…':'这一段已练完');if(loop)play();return}
- text('status','跟着自己的声部唱');$('progress').firstElementChild.style.width=100*(beat-startBeat)/(endBeat-startBeat)+'%';const b=DATA.bars.find(b=>b.beat<=beat&&beat<b.beat+b.dur)||DATA.bars.at(-1);currentBar=b.number;if(viewSystem!==b.system)showSystem(b.system);highlightBar(b.number);text('location','第 '+b.label+' 小节 · 第 '+(Math.floor((beat-b.beat)/(4/b.beatType))+1)+' 拍');
- referenceBeat=beat;syncGuidedMix(beat);renderReference();const active=part().events.filter(e=>e.midi!==null&&!e.optional&&!e.grace&&e.beat<=beat&&beat<e.beat+e.dur);text('pitch',active.length?active.map(noteName).join(' + '):part().systems[viewSystem].sourceAbsent?'原谱未列出该声部':'休止');const e=active.find(e=>e.x!==undefined&&e.x!==null);$('cursor').style.display=e?'block':'none';if(e){$('cursor').style.left=e.x*100+'%';}
- for(const n of $('currentLyrics').querySelectorAll('[data-event]')){const start=Number(n.dataset.beat),end=Number(n.dataset.end);n.classList.toggle('sounding',start<=beat&&beat<end)}
- for(const n of $('currentNumbers').querySelectorAll('[data-event]')){const st=Number(n.dataset.beat),dur=Number(n.dataset.duration);n.classList.toggle('sounding',dur>0&&st<=beat&&beat<st+dur)}
+function partGain(p,beat){if(DATA.melodyGuide){const m=guidedMix(p.id,beat);return m.on?m.volume/100:0}return audible[p.id]?volumes[p.id]/100:0}
+function range(){const a=clamp(Math.round(Number($('from').value)||1),1,N),b=clamp(Math.round(Number($('to').value)||N),a,N);$('from').value=a;$('to').value=b;return [DATA.bars[a-1].beat,DATA.bars[b-1].beat+DATA.bars[b-1].dur,a,b]}
+// 循环有两种：手动范围（开关“循环”）和“循环本行”。循环本行不改手动范围，换行时跟着走，再点一次结束。
+let lineLoop=null;
+function loopBounds(){if(lineLoop!==null){const bs=systemBars(lineLoop);return [bs[0].beat,bs.at(-1).beat+bs.at(-1).dur,bs[0].number,bs.at(-1).number]}return $('loop').checked?range():null}
+function settings(){const lb=loopBounds(),[lo,hi]=lb||[0,DATA.totalBeats];return {lo,hi,loop:!!lb,tempo:tempo(),countin:$('countin').checked,click:$('click').checked,selected,mix:DATA.melodyGuide?mixOverrides:DATA.parts.map(p=>audible[p.id]?volumes[p.id]:0)}}
+
+// ---------- 钢琴采样与合成（纯 JS） ----------
+let SR=22050,samples=null,sampleKeys=[];
+const ready=(async()=>{
+ try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch{}
+ const Offline=window.OfflineAudioContext||window.webkitOfflineAudioContext,Live=window.AudioContext||window.webkitAudioContext;
+ let ctx;try{ctx=new Offline(1,22050,22050)}catch{try{ctx=new Offline(1,44100,44100)}catch{ctx=new Live()}}
+ const decode=buf=>new Promise((ok,no)=>{const r=ctx.decodeAudioData(buf,ok,no);if(r&&r.then)r.then(ok,no)});
+ const out={};for(const [key,b64] of Object.entries(PIANO)){const buffer=await decode(Uint8Array.from(atob(b64),c=>c.charCodeAt(0)).buffer);SR=buffer.sampleRate;out[key]=buffer.getChannelData(0).slice()}
+ if(ctx.close)try{ctx.close()}catch{}
+ samples=out;sampleKeys=Object.keys(out).map(Number);
+})();
+function addTone(out,midi,when,duration,gain,wrap){
+ const key=sampleKeys.reduce((a,b)=>Math.abs(b-midi)<Math.abs(a-midi)?b:a),src=samples[key],rate=2**((midi-key)/12),len=out.length;
+ const i0=Math.round(when*SR),att=.005*SR,hold=Math.max(.006,duration)*SR,rel=.18*SR,n=Math.min(Math.ceil(hold+rel),Math.floor((src.length-2)/rate)),g0=gain*.65;
+ for(let i=0;i<n;i++){let k=i0+i;if(k>=len){if(!wrap)break;k-=len;if(k>=len)break}if(k<0)continue;const x=i*rate,j=x|0,env=i<att?i/att:i<hold?1:1-(i-hold)/rel;out[k]+=g0*env*(src[j]+(src[j+1]-src[j])*(x-j))}
 }
+let seed=1;const noise=()=>(seed=(seed*16807)%2147483647)/1073741823.5-1;
+function addDrum(out,key,when,gain){
+ const i0=Math.round(when*SR),len=out.length;
+ if(key===35||key===36){let ph=0;const n=Math.round(.2*SR);for(let i=0;i<n&&i0+i<len;i++){const t=i/SR,f=130*Math.pow(45/130,Math.min(t,.14)/.14);ph+=2*Math.PI*f/SR;out[i0+i]+=gain*.6*Math.pow(.001/.6,t/.2)*Math.sin(ph)}return}
+ const high=key===42||key===44||key===46,length=high?.07:.18,n=Math.round(length*SR),w=2*Math.PI*(high?6500:1500)/SR,cw=Math.cos(w),al=Math.sin(w)/(2*(high?.707:1));
+ const a0=1+al,b=high?[(1+cw)/2,-(1+cw),(1+cw)/2]:[al,0,-al],a1=-2*cw,a2=1-al;let x1=0,x2=0,y1=0,y2=0;
+ for(let i=0;i<n&&i0+i<len;i++){const x=noise(),y=(b[0]*x+b[1]*x1+b[2]*x2-a1*y1-a2*y2)/a0;x2=x1;x1=x;y2=y1;y1=y;out[i0+i]+=gain*.6*Math.pow(.001/.6,i/n)*y}
+}
+function addClick(out,when,strong){const i0=Math.round(when*SR),n=Math.round(.06*SR),f=strong?1200:850;for(let i=0;i<n&&i0+i<out.length;i++){if(i0+i<0)continue;const t=i/SR;out[i0+i]+=.13*Math.pow(.001/.13,t/.055)*Math.sin(2*Math.PI*f*t)}}
+function wavURL(data){
+ // 自动电平：按 99.9% 分位压到约 -3dB，超出部分软限幅
+ const hist=new Uint32Array(400);let count=0;for(let i=0;i<data.length;i+=3){const a=Math.abs(data[i]);if(a>1e-4){hist[Math.min(399,(a*200)|0)]++;count++}}
+ let need=count*.001,level=0;for(let i=399;i>=0;i--){need-=hist[i];if(need<=0){level=(i+1)/200;break}}
+ const scale=level>0?Math.min(6,.62/level):1,pcm=new Int16Array(data.length);
+ for(let i=0;i<data.length;i++){let x=data[i]*scale;const a=x<0?-x:x;if(a>.6){const y=.6+.38*Math.tanh((a-.6)/.38);x=x<0?-y:y}pcm[i]=x*32767}
+ const head=new DataView(new ArrayBuffer(44)),str=(at,s)=>{for(let i=0;i<s.length;i++)head.setUint8(at+i,s.charCodeAt(i))};
+ str(0,'RIFF');head.setUint32(4,36+pcm.length*2,true);str(8,'WAVE');str(12,'fmt ');head.setUint32(16,16,true);head.setUint16(20,1,true);head.setUint16(22,1,true);head.setUint32(24,SR,true);head.setUint32(28,SR*2,true);head.setUint16(32,2,true);head.setUint16(34,16,true);str(36,'data');head.setUint32(40,pcm.length*2,true);
+ return URL.createObjectURL(new Blob([head,pcm],{type:'audio/wav'}));
+}
+function synth(s){
+ const sec=60/s.tempo,base=perf(s.lo),first=barAt(s.lo),step=4/first.beatType,pre=s.countin?countBeats(first)*sec:0;
+ const at=beat=>pre+(perf(beat)-base)*sec,end=at(s.hi),out=new Float32Array(Math.ceil((end+(s.loop?0:.8))*SR));
+ for(const p of DATA.parts)for(const e of p.sounds){
+  const a=Math.max(s.lo,e.beat),b=Math.min(s.hi,e.beat+e.dur);if(b<=a)continue;const gain=partGain(p,a);if(!gain)continue;
+  if(p.role==='percussion'||e.percussion){if(e.beat>=s.lo)addDrum(out,e.midi,at(a),gain);continue}
+  addTone(out,e.midi,at(a),(at(b)-at(a))*(e.staccato?.55:1),gain,s.loop);
+ }
+ for(let b=0;b<countBeats(first)-1e-6&&s.countin;b+=step)addClick(out,b*sec,b===0);
+ if(s.click)for(const bar of DATA.bars){const pulse=4/bar.beatType,phase=(bar.pickupPhase||0)%pulse;for(let o=phase?pulse-phase:0;o<bar.dur-1e-5;o+=pulse){const beat=bar.beat+o;if(s.lo<=beat&&beat<s.hi)addClick(out,at(beat),o===0)}}
+ return {...s,pre,sec,base,duration:out.length/SR,url:wavURL(out),key:JSON.stringify(s)};
+}
+
+// ---------- 播放：唯一的一套状态 ----------
+// position：暂停时的位置（拍）；track：当前合成好的音频；jumpTo：预备拍结束后要跳到的位置
+const player=$('player'),preview=$('preview');
+let track=null,stale=true,renderTimer=null,playing=false,position=0,jumpTo=null,raf=0,dragging=false;
+const SILENT='data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YQIAAAAAAA==';
+const timeOf=beat=>track.pre+(perf(beat)-track.base)*track.sec;
+const beatOf=t=>t<track.pre?null:written(track.base+(t-track.pre)/track.sec);
+function nowBeat(){if(!playing||!track)return position;if(jumpTo!==null)return jumpTo;const b=beatOf(player.currentTime);return b===null?track.lo:clamp(b,track.lo,track.hi-1e-6)}
+function changed(){stale=true;clearTimeout(renderTimer);if(samples)renderTimer=setTimeout(()=>refresh(),250)}
+function whenLoaded(fn){if(player.readyState>=1)fn();else player.addEventListener('loadedmetadata',fn,{once:true})}
+// 静音定位：手机上边播边改位置时，可能先漏出旧位置的一小段声音（开头的“杂音”）。
+// 先静音，等确实到了目标位置再开声；最多静音 0.8 秒。
+let unmuteAt=null,unmuteTimer=0;
+function quietSeek(t){player.muted=true;unmuteAt=t;clearTimeout(unmuteTimer);unmuteTimer=setTimeout(()=>{unmuteAt=null;player.muted=false},800);whenLoaded(()=>{try{player.currentTime=t}catch{}})}
+function tryUnmute(){if(unmuteAt===null||player.seeking)return;const t=player.currentTime;if(t>=unmuteAt-.05&&t<unmuteAt+.6){unmuteAt=null;clearTimeout(unmuteTimer);setTimeout(()=>{if(unmuteAt===null)player.muted=false},15)}}
+for(const ev of ['seeked','playing','timeupdate'])player.addEventListener(ev,tryUnmute);
+// 设置变了就重新合成；播放中从同一位置接上
+function refresh(){
+ clearTimeout(renderTimer);if(!samples)return false;const s=settings();
+ if(track&&!stale&&track.key===JSON.stringify(s))return true;
+ const beat=nowBeat(),wasPlaying=playing,inCount=playing&&(jumpTo!==null||player.currentTime<track.pre),old=track;
+ playing=false;track=synth(s);stale=false;player.loop=track.loop&&track.pre===0;player.src=track.url;player.load();if(old)setTimeout(()=>URL.revokeObjectURL(old.url),2000);
+ if(wasPlaying){const target=beat<track.lo||beat>=track.hi?track.lo:beat;begin(target,inCount||target!==beat)}
+ return true;
+}
+function unlock(){if(!player.src)player.src=SILENT;const p=player.play();if(p&&p.catch)p.catch(()=>{})}
+// 从某拍开始播放；count=true 时先打预备拍，并从该小节开头起
+function begin(beat,count){
+ if(mode!=='listen')return;
+ if(!samples){unlock();text('status','正在准备钢琴音色…');ready.then(()=>begin(beat,count)).catch(()=>{});return}
+ playing=false;jumpTo=null;refresh();
+ let offset,target=null;beat=clamp(beat,track.lo,track.hi-1e-6);
+ if(count&&track.pre>0){beat=Math.max(track.lo,barAt(beat).beat);if(beat-track.lo<1e-6)offset=0;else{offset=Math.max(0,track.pre-Math.min(track.pre,countBeats(barAt(beat))*track.sec));target=beat}}
+ else offset=timeOf(beat);
+ jumpTo=target;position=beat;playing=true;showBeat(beat);
+ quietSeek(offset);
+ const p=player.play();if(p&&p.catch)p.catch(err=>{if(err&&err.name==='AbortError')return;playing=false;jumpTo=null;paintPlay();text('status','手机拦截了播放，请再点一次 ▶');console.warn(err)});
+ paintPlay();text('status',offset<track.pre?'预备…':playStatus());setMedia();animate();
+}
+function pause(){position=nowBeat();jumpTo=null;playing=false;player.pause();paintPlay();text('status','已暂停');clearSounding();setMedia()}
+function toggle(){if(playing)pause();else begin(position,$('countin').checked)}
+function checkJump(){if(jumpTo!==null&&player.currentTime>=track.pre-.025){const t=timeOf(jumpTo);jumpTo=null;quietSeek(t)}}
+function animate(){cancelAnimationFrame(raf);const step=()=>{if(!playing)return;checkJump();if(!document.hidden&&mode==='listen')showBeat(nowBeat(),jumpTo!==null||player.currentTime<track.pre);raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)}
+player.addEventListener('timeupdate',()=>{if(playing)checkJump()});
+player.addEventListener('ended',()=>{if(track.loop){if(playing)begin(track.lo,false);return}playing=false;jumpTo=null;position=track.lo;paintPlay();showBeat(position);clearSounding();text('status','这一段已练完');setMedia()});
+player.addEventListener('pause',()=>{if(playing&&!player.ended&&player.src!==SILENT&&!player.seeking){position=nowBeat();jumpTo=null;playing=false;paintPlay();text('status','已暂停');setMedia()}});
+player.addEventListener('play',()=>{if(!playing&&track&&player.src===track.url){playing=true;paintPlay();animate();setMedia()}});
+// 定位：点小节、拖动条、上一/下一小节、上一/下一行都走这里；播放中直接跳过去继续，不重复预备拍
+function locate(beat){
+ beat=clamp(beat,0,DATA.totalBeats-1e-6);
+ if(lineLoop!==null){const sid=barAt(beat).system;if(sid!==lineLoop){lineLoop=sid;stale=true;paintLoop();text('status',loopText())}}
+ else if($('loop').checked){const [lo,hi]=range();if(beat<lo||beat>=hi){$('loop').checked=false;stale=true;paintLoop();text('status','已离开循环范围，循环已关闭')}}
+ position=beat;showBeat(beat);
+ if(playing)begin(beat,false);else{paintPlay();if(stale)changed()}
+}
+function startBar(){const lb=loopBounds();return lb?lb[2]:1}
+function toStart(){locate(DATA.bars[startBar()-1].beat)}                     // 循环时回循环起点，否则回第 1 小节
+function stepBar(d){const b=barAt(nowBeat()),lb=loopBounds();let n=clamp(b.number+d,1,N);if(lb)n=clamp(n,lb[2],lb[3]);locate(DATA.bars[n-1].beat)}  // 循环时不越过循环两端
+function moveLine(d){const sid=clamp(barAt(nowBeat()).system+d,0,DATA.systemCount-1);locate(systemBars(sid)[0].beat)}
+function loopText(){const lb=loopBounds();return lb?(lineLoop!==null?'循环本行 · ':'循环 · ')+'第 '+DATA.bars[lb[2]-1].label+'–'+DATA.bars[lb[3]-1].label+' 小节':'不循环'}
+function playStatus(){return loopBounds()?loopText():'正在播放'}
+function paintPlay(){text('play',playing?'Ⅱ 暂停':'▶ 播放')}
+function paintLoop(){
+ text('reset','⏮ 回第 '+DATA.bars[startBar()-1].label+' 小节');
+ const on=lineLoop!==null;$('lineplay').classList.toggle('on',on);$('lineplay').setAttribute('aria-pressed',on);text('lineplay',on?'✓ 循环本行中 · 点此结束':'↻ 循环本行');
+ const lb=loopBounds(),band=$('loopband');band.hidden=!lb;if(lb){band.style.left=100*lb[0]/DATA.totalBeats+'%';band.style.width=100*(lb[1]-lb[0])/DATA.totalBeats+'%'}
+}
+function setMedia(){if(!('mediaSession' in navigator))return;try{navigator.mediaSession.metadata=new MediaMetadata({title:DATA.title,artist:'声部练习室 · 我练 '+part().name});navigator.mediaSession.playbackState=playing?'playing':'paused'}catch{}}
+function bindMedia(){
+ if(!('mediaSession' in navigator))return;const set=(a,f)=>{try{navigator.mediaSession.setActionHandler(a,f)}catch{}};
+ set('play',()=>{if(!playing)toggle()});set('pause',()=>{if(playing)pause()});set('previoustrack',()=>stepBar(-1));set('nexttrack',()=>stepBar(1));
+}
+
+// ---------- 听着练：谱面显示 ----------
+function showBeat(beat,counting=false){
+ const b=barAt(beat);currentBar=b.number;if(viewSystem!==b.system)showSystem(b.system);highlightBar(b.number);
+ if(DATA.melodyGuide&&Math.abs(referenceBeat-beat)>1e-6){referenceBeat=beat;syncGuidedMix(beat);renderReference()}
+ if(!dragging){$('seek').value=beat;$('seek').style.setProperty('--p',100*beat/DATA.totalBeats+'%');text('seekLabel','第 '+b.label+' 小节')}
+ text('location','第 '+b.label+' 小节 · 第 '+(Math.floor((beat-b.beat)/(4/b.beatType))+1)+' 拍');
+ if(counting){text('status','预备…');text('pitch','预备');$('cursor').style.display='none';return}
+ if(!playing){text('pitch','准备开始');$('cursor').style.display='none';return}
+ if($('status').textContent==='预备…')text('status',playStatus());
+ const active=part().events.filter(e=>e.midi!==null&&!e.optional&&!e.grace&&e.beat<=beat&&beat<e.beat+e.dur);
+ text('pitch',active.length?active.map(noteName).join(' + '):part().systems[viewSystem].sourceAbsent?'原谱未列出':'休止');
+ const e=active.find(e=>e.x!==undefined&&e.x!==null);$('cursor').style.display=e?'block':'none';if(e)$('cursor').style.left=e.x*100+'%';
+ for(const n of $('currentLyrics').querySelectorAll('[data-event]'))n.classList.toggle('sounding',Number(n.dataset.beat)<=beat&&beat<Number(n.dataset.end));
+ for(const n of $('currentNumbers').querySelectorAll('[data-event]')){const st=Number(n.dataset.beat),d=Number(n.dataset.duration);n.classList.toggle('sounding',d>0&&st<=beat&&beat<st+d)}
+}
+function clearSounding(){$('cursor').style.display='none';for(const id of ['currentNumbers','currentLyrics'])for(const n of $(id).querySelectorAll('[data-event]'))n.classList.remove('sounding')}
 function noteName(e){if(e.name)return e.name;return ['C','C♯','D','E♭','E','F','F♯','G','A♭','A','B♭','B'][e.midi%12]+(Math.floor(e.midi/12)-1)}
 function highlightBar(n){const b=DATA.bars[n-1];$('shade').style.display=b.left===undefined||b.right===undefined?'none':'block';if(b.left!==undefined){$('shade').style.left=b.left*100+'%';$('shade').style.width=(b.right-b.left)*100+'%'}for(const e of $('barlinks').children)e.classList.toggle('active',Number(e.dataset.bar)===n)}
 function rowCaption(prefix,sid){const bs=systemBars(sid);return prefix+' · 第 '+bs[0].label+'–'+bs.at(-1).label+' 小节'}
 function lyricsSVG(p,sid){
  const lyrics=(p.lyrics||[]).filter(l=>l.system===sid);if(!lyrics.length)return '';
- const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
  const indices=new Map(p.events.map((e,i)=>[e.eventIndex??i,e]));const x=e=>100*(e.numberX??e.x??0);const verses=[...new Set(lyrics.map(l=>l.verse||1))].sort((a,b)=>a-b);const out=[];
- for(const verse of verses){out.push(`<div class="lyric-verse" role="group" aria-label="${escape(p.name)}歌词">`);for(const l of lyrics.filter(l=>(l.verse||1)===verse)){const e=indices.get(l.eventIndex);if(!e)continue;const xx=x(e);out.push(`<span class="lyric-word" style="left:${xx}%" data-event="${e.eventIndex}" data-beat="${l.beat}" data-end="${l.endBeat}">${escape(l.text)}</span>`);if(l.extend&&l.extendTo!==undefined){const last=indices.get(l.extendTo),end=last&&DATA.bars[last.bar-1]?.system===sid?x(last):xx;if(end>xx)out.push(`<span class="lyric-extension" style="left:calc(${xx}% + 16px);width:calc(${end-xx}% - 16px)" aria-hidden="true"></span>`)}}out.push('</div>')}
+ for(const verse of verses){out.push(`<div class="lyric-verse" role="group" aria-label="${escapeHTML(p.name)}歌词">`);for(const l of lyrics.filter(l=>(l.verse||1)===verse)){const e=indices.get(l.eventIndex);if(!e)continue;const xx=x(e);out.push(`<span class="lyric-word" style="left:${xx}%" data-event="${e.eventIndex}" data-beat="${l.beat}" data-end="${l.endBeat}">${escapeHTML(l.text)}</span>`);if(l.extend&&l.extendTo!==undefined){const last=indices.get(l.extendTo),end=last&&DATA.bars[last.bar-1]?.system===sid?x(last):xx;if(end>xx)out.push(`<span class="lyric-extension" style="left:calc(${xx}% + 16px);width:calc(${end-xx}% - 16px)" aria-hidden="true"></span>`)}}out.push('</div>')}
  return out.join('');
 }
 function getReferencePart(){return referenceChoice==='auto'?(DATA.melodyGuide?DATA.parts.find(p=>p.id===guidePart(referenceBeat)&&p.id!==selected):DATA.parts.find(p=>p.role==='solo'&&p.id!==selected)):DATA.parts.find(p=>p.id===referenceChoice&&p.id!==selected)}
 function referenceChoices(){
  if(referenceChoice===selected)referenceChoice='';
- const menu=$('referencePart');menu.replaceChildren();
- const solo=DATA.parts.find(p=>p.role==='solo'&&p.id!==selected);
- for(const [value,label] of [['auto',DATA.melodyGuide?'跟随旋律':solo?'默认（'+solo.name+'）':'默认（不显示）'],['','不显示'],...DATA.parts.filter(p=>p.id!==selected).map(p=>[p.id,p.name])]){const option=document.createElement('option');option.value=value;option.textContent=label;menu.append(option)}
+ const menu=$('referencePart');menu.replaceChildren();const solo=DATA.parts.find(p=>p.role==='solo'&&p.id!==selected);
+ for(const [value,label] of [['auto',DATA.melodyGuide?'跟随旋律':solo?'默认（'+solo.name+'）':'默认（不显示）'],['','不显示'],...DATA.parts.filter(p=>p.id!==selected).map(p=>[p.id,p.name])]){const o=document.createElement('option');o.value=value;o.textContent=label;menu.append(o)}
  menu.value=referenceChoice;
 }
 let referenceKey='';
-function renderReference(){const reference=getReferencePart(),key=viewSystem+':'+(reference?.id||'');if(key===referenceKey)return;referenceKey=key;
- $('referenceRows').replaceChildren();if(!reference)return;const label=document.createElement('div');label.className='part-label solo';label.textContent=reference.name;const wrap=document.createElement('div');wrap.className='staff-scroll';const inside=document.createElement('div');inside.className='staff-content';const img=document.createElement('img');img.style.width='100%';img.style.display='block';img.alt='当前行的 '+reference.name+' 谱';img.src=reference.systems[viewSystem].image;const lyrics=document.createElement('div');lyrics.className='lyrics';lyrics.innerHTML=lyricsSVG(reference,viewSystem);inside.append(img,lyrics);wrap.append(inside);$('referenceRows').append(label,wrap)
+function renderReference(force=false){
+ const reference=getReferencePart(),key=viewSystem+':'+(reference?.id||'');if(key===referenceKey&&!force)return;referenceKey=key;
+ $('referenceRows').replaceChildren();if(!reference)return;
+ const label=document.createElement('div');label.className='part-label solo';label.textContent=reference.name;
+ const wrap=document.createElement('div');wrap.className='staff-scroll';const inside=document.createElement('div');inside.className='staff-content';
+ const img=document.createElement('img');img.alt='当前行的 '+reference.name+' 谱';img.src=reference.systems[viewSystem].image;
+ const lyrics=document.createElement('div');lyrics.className='lyrics';lyrics.innerHTML=lyricsSVG(reference,viewSystem);inside.append(img,lyrics);wrap.append(inside);$('referenceRows').append(label,wrap);
 }
-function showSystem(id,focusBeat=null){
- const previousSystem=viewSystem;viewSystem=Math.max(0,Math.min(DATA.systemCount-1,id));const p=part(),row=p.systems[viewSystem],bs=systemBars(viewSystem);$('score').src=row.image;$('currentLyrics').innerHTML=lyricsSVG(p,viewSystem);$('currentNumbers').innerHTML=row.numbers;text('ownLabel',p.name);text('scoreTitle','跟着 '+p.name+' 练');text('currentCaption',rowCaption('当前行',viewSystem));text('lineLabel',(viewSystem+1)+' / '+DATA.systemCount);$('prev').disabled=viewSystem===0;$('next').disabled=viewSystem===DATA.systemCount-1;$('cursor').style.display='none';$('ownScroll').scrollLeft=0;
- referenceBeat=playing?Math.max(startBeat,startBeat+(ctx.currentTime-origin)*runTempo/60):focusBeat??(previousSystem===viewSystem?referenceBeat:bs[0].beat);syncGuidedMix(referenceBeat);if(!playing&&DATA.melodyGuide)for(const p of DATA.parts)updateGain(p.id);renderReference();
- const preview=p,next=preview.systems[viewSystem+1];$('nextContext').hidden=!next;if(next){$('nextScore').src=next.image;$('nextLyrics').innerHTML=lyricsSVG(preview,viewSystem+1);$('nextNumbers').innerHTML=next.numbers;text('nextCaption',rowCaption('下一行',viewSystem+1)+' · '+preview.name)}
- $('barlinks').replaceChildren();for(const b of bs){const button=document.createElement('button');button.textContent='第 '+b.label+' 小节';button.dataset.bar=b.number;button.onclick=()=>selectBar(b.number);$('barlinks').append(button)}
- $('pitchlist').replaceChildren();for(const b of bs){const group=document.createElement('div');group.className='note-group';const label=document.createElement('div');label.className='note-group-title';label.textContent='第 '+b.label+' 小节';const buttons=document.createElement('div');buttons.className='note-buttons';for(const e of p.events.filter(e=>e.bar===b.number&&e.midi!==null)){const button=document.createElement('button');const name=(e.optional?'备选 ':e.grace?'倚音 ':'')+noteName(e);button.textContent='▶ '+name;button.setAttribute('aria-label','试听 '+name);button.onclick=()=>single(e,p);buttons.append(button)}if(!buttons.children.length){const rest=document.createElement('span');rest.className='muted';rest.textContent=p.systems[viewSystem].sourceAbsent?'原谱未列出该声部':'休止';buttons.append(rest)}group.append(label,buttons);$('pitchlist').append(group)}highlightBar(bs.some(b=>b.number===currentBar)?currentBar:bs[0].number);
+function showSystem(id){
+ viewSystem=clamp(id,0,DATA.systemCount-1);const p=part(),row=p.systems[viewSystem],bs=systemBars(viewSystem);
+ $('score').src=row.image;$('currentLyrics').innerHTML=lyricsSVG(p,viewSystem);$('currentNumbers').innerHTML=row.numbers;text('ownLabel',p.name);text('scoreTitle','跟着 '+p.name+' 练');text('currentCaption',rowCaption('当前行',viewSystem));text('lineLabel',(viewSystem+1)+' / '+DATA.systemCount);$('prev').disabled=viewSystem===0;$('next').disabled=viewSystem===DATA.systemCount-1;$('cursor').style.display='none';
+ if(!playing){const pos=nowBeat();referenceBeat=barAt(pos).system===viewSystem?pos:bs[0].beat;syncGuidedMix(referenceBeat)}renderReference(true);
+ const next=p.systems[viewSystem+1];$('nextContext').hidden=!next;if(next){$('nextScore').src=next.image;$('nextLyrics').innerHTML=lyricsSVG(p,viewSystem+1);$('nextNumbers').innerHTML=next.numbers;text('nextCaption',rowCaption('下一行',viewSystem+1)+' · '+p.name)}
+ $('barlinks').replaceChildren();for(const b of bs){const button=document.createElement('button');button.textContent='第 '+b.label+' 小节';button.dataset.bar=b.number;button.onclick=()=>locate(b.beat);$('barlinks').append(button)}
+ $('pitchlist').replaceChildren();for(const b of bs){const group=document.createElement('div');group.className='note-group';const label=document.createElement('div');label.className='note-group-title';label.textContent='第 '+b.label+' 小节';const buttons=document.createElement('div');buttons.className='note-buttons';for(const e of p.events.filter(e=>e.bar===b.number&&e.midi!==null)){const button=document.createElement('button');const name=(e.optional?'备选 ':e.grace?'倚音 ':'')+noteName(e);button.textContent='▶ '+name;button.setAttribute('aria-label','试听 '+name);button.onclick=()=>single(e,p);buttons.append(button)}if(!buttons.children.length){const rest=document.createElement('span');rest.className='muted';rest.textContent=p.systems[viewSystem].sourceAbsent?'原谱未列出该声部':'休止';buttons.append(rest)}group.append(label,buttons);$('pitchlist').append(group)}
+ highlightBar(bs.some(b=>b.number===currentBar)?currentBar:bs[0].number);
 }
-function selectBar(n){stop();currentBar=n;$('from').value=n;$('to').value=n;showSystem(DATA.bars[n-1].system,DATA.bars[n-1].beat);text('location','第 '+DATA.bars[n-1].label+' 小节');text('pitch','准备开始');text('status','已选择小节，点击开始练习。')}
-async function single(e,p=part()){stop();try{await audio();if(p.role==='percussion')drum(e.midi,ctx.currentTime+.02,p.id,true);else tone(e.midi,ctx.currentTime+.02,1.2,p.id,true);text('pitch',noteName(e));text('status','单音试听 · '+p.name)}catch(err){text('status','音频未能启动，请用系统浏览器重试。');console.error(err)}}
-function init(){
- document.title=DATA.title+' · 声部练习室';text('title',DATA.title);if(DATA.unchecked.length){$('draft').hidden=false;text('draft','待校对：'+DATA.unchecked.join('、'))}
- for(const p of DATA.parts){const option=document.createElement('option');option.value=p.id;option.textContent=p.name;$('part').append(option);const row=document.createElement('div');row.className='channel';const label=document.createElement('label');const check=document.createElement('input');check.type='checkbox';check.setAttribute('aria-label','播放'+p.name);check.onchange=()=>editAudible(p.id,check.checked);listenChecks[p.id]=check;label.append(check,document.createTextNode(' '+p.name));const controls=document.createElement('div');controls.className='volume-control';const slider=document.createElement('input');slider.id='volume-'+p.id;slider.type='number';slider.min=0;slider.max=100;slider.step=5;slider.inputMode='numeric';slider.setAttribute('aria-label',p.name+'音量百分比');const output=document.createElement('output');output.htmlFor=slider.id;sliders[p.id]=slider;outputs[p.id]=output;slider.onchange=()=>editVolume(p.id,slider.value);const lower=document.createElement('button'),higher=document.createElement('button');lower.textContent='−';higher.textContent='+';lower.setAttribute('aria-label',p.name+'音量降低10%');higher.setAttribute('aria-label',p.name+'音量提高10%');lower.onclick=()=>editVolume(p.id,volumes[p.id]-10);higher.onclick=()=>editVolume(p.id,volumes[p.id]+10);controls.append(lower,slider,output,higher);row.append(label,controls);$('mix').append(row)}
- $('part').value=selected;$('tempo').value=DATA.bpm;$('from').max=N;$('to').max=N;$('to').value=N;text('slow','慢练 '+Math.max(20,Math.round(DATA.bpm*.75)));text('normal','原速 '+DATA.bpm);text('location','第 '+DATA.bars[0].label+' 小节');initialMix();showSystem(0);
- $('part').onchange=()=>{selected=$('part').value;initialMix();referenceChoices();showSystem(viewSystem);text('pitch','准备开始');savePreferences()};$('referencePart').onchange=()=>{referenceChoice=$('referencePart').value;showSystem(viewSystem);savePreferences()};$('play').onclick=play;
- $('reset').onclick=()=>{stop();const[a,,n]=range();currentBar=n;showSystem(DATA.bars[n-1].system,DATA.bars[n-1].beat);text('location','第 '+DATA.bars[n-1].label+' 小节');text('pitch','准备开始');text('status','已回到所选范围起点');$('progress').firstElementChild.style.width='0%'};
+// 逐音试听：同步合成一小段，在点击当下播放
+function single(e,p=part()){
+ if(!samples){text('status','钢琴音色还在准备，请稍候');return}
+ if(playing)pause();
+ const out=new Float32Array(Math.round(1.6*SR));if(p.role==='percussion'||e.percussion)addDrum(out,e.midi,.02,1);else addTone(out,e.midi,.02,1.2,1,false);
+ if(preview.dataset.url)URL.revokeObjectURL(preview.dataset.url);const url=wavURL(out);preview.dataset.url=url;preview.src=url;const r=preview.play();if(r&&r.catch)r.catch(()=>{});
+ text('pitch',noteName(e));text('status','单音试听 · '+p.name);
+}
 
- for(const id of ['tempo','from','to','countin','click'])$(id).onchange=()=>{stop();range();$('tempo').value=Math.max(20,Math.min(300,Number($('tempo').value)||DATA.bpm));text('status','设置已更新，点击开始练习。')};
- $('slow').onclick=()=>{stop();$('tempo').value=Math.max(20,Math.round(DATA.bpm*.75));text('status','已设为慢练速度')};$('normal').onclick=()=>{stop();$('tempo').value=DATA.bpm;text('status','已恢复原速')};
- $('prev').onclick=()=>{stop();showSystem(viewSystem-1)};$('next').onclick=()=>{stop();showSystem(viewSystem+1)};$('nextFocus').onclick=$('next').onclick;$('lineplay').onclick=()=>{stop();const bs=systemBars(viewSystem);$('from').value=bs[0].number;$('to').value=bs.at(-1).number;play()};
- loadPreferences();referenceChoices();showSystem(0);
+// ---------- 只看谱 ----------
+let mode='listen',reader={parts:null,numbers:true,view:'parts'},readerKey='';
+function readerDefaults(){const ref=getReferencePart();return DATA.parts.filter(p=>p.id===selected||p.id===ref?.id).map(p=>p.id)}
+function setMode(m){
+ mode=m==='read'?'read':'listen';document.body.dataset.mode=mode;$('listenView').hidden=mode!=='listen';$('readView').hidden=mode!=='read';$('dock').hidden=mode!=='listen';
+ $('modeListen').setAttribute('aria-selected',mode==='listen');$('modeRead').setAttribute('aria-selected',mode==='read');
+ if(mode==='read'){pause();preview.pause();if(!reader.parts)reader.parts=readerDefaults();renderReader()}else showBeat(nowBeat());
+ try{history.replaceState(null,'',mode==='read'?'#read':location.pathname+location.search)}catch{}
+ savePreferences();
 }
-function savePreferences(){try{localStorage.setItem('choir-practice:'+DATA.title,JSON.stringify({selected,referenceChoice,volumes,audible,mixOverrides}))}catch{}}
-function loadPreferences(){try{const p=JSON.parse(localStorage.getItem('choir-practice:'+DATA.title)||'null');if(!p)return;if(DATA.parts.some(x=>x.id===p.selected)){selected=p.selected;$('part').value=selected}if(p.referenceChoice==='auto'||p.referenceChoice===''||DATA.parts.some(x=>x.id===p.referenceChoice))referenceChoice=p.referenceChoice;if(DATA.melodyGuide){for(const part of DATA.parts){const v=p.mixOverrides?.volumes?.[part.id],a=p.mixOverrides?.audible?.[part.id];if(typeof v==='number')mixOverrides.volumes[part.id]=Math.max(0,Math.min(100,v));if(typeof a==='boolean')mixOverrides.audible[part.id]=a}syncGuidedMix(referenceBeat);return}for(const part of DATA.parts){if(typeof p.volumes?.[part.id]==='number')setVolume(part.id,p.volumes[part.id]);if(typeof p.audible?.[part.id]==='boolean')setAudible(part.id,p.audible[part.id])}}catch{}}
+function renderReader(){
+ const hasPages=Array.isArray(DATA.scorePages)&&DATA.scorePages.length>0;if(!hasPages)reader.view='parts';
+ $('readViewSwitch').hidden=!hasPages;$('readByParts').setAttribute('aria-pressed',reader.view==='parts');$('readPages').setAttribute('aria-pressed',reader.view==='pages');
+ $('readerChips').hidden=reader.view!=='parts';$('readerParts').hidden=reader.view!=='parts';$('readerPages').hidden=reader.view!=='pages';
+ const chips=$('readerChips');chips.replaceChildren();
+ for(const p of DATA.parts){const b=document.createElement('button');b.className='chip';b.textContent=p.name;b.setAttribute('aria-pressed',reader.parts.includes(p.id));b.onclick=()=>{reader.parts=reader.parts.includes(p.id)?reader.parts.filter(x=>x!==p.id):[...reader.parts,p.id];renderReader();savePreferences()};chips.append(b)}
+ const num=document.createElement('button');num.className='chip chip-option';num.textContent='简谱';num.setAttribute('aria-pressed',reader.numbers);num.onclick=()=>{reader.numbers=!reader.numbers;renderReader();savePreferences()};chips.append(num);
+ if(reader.view==='pages'){if(!$('readerPages').children.length)DATA.scorePages.forEach((src,i)=>{const fig=document.createElement('figure');fig.className='page';const img=document.createElement('img');img.loading='lazy';img.decoding='async';img.alt='原谱第 '+(i+1)+' 页';img.src=src;const cap=document.createElement('figcaption');cap.textContent='第 '+(i+1)+' / '+DATA.scorePages.length+' 页';fig.append(img,cap);$('readerPages').append(fig)});return}
+ const shown=DATA.parts.filter(p=>reader.parts.includes(p.id)),key=shown.map(p=>p.id).join(',')+'|'+reader.numbers;if(key===readerKey)return;readerKey=key;
+ const box=$('readerParts');box.replaceChildren();
+ if(!shown.length){const empty=document.createElement('p');empty.className='reader-empty';empty.textContent='在上面点选要看的声部';box.append(empty);return}
+ for(let sid=0;sid<DATA.systemCount;sid++){
+  const sec=document.createElement('section');sec.className='read-line';const bs=systemBars(sid);
+  const h=document.createElement('div');h.className='read-line-head';h.innerHTML='<b>'+(sid+1)+'</b><span>第 '+escapeHTML(bs[0].label)+'–'+escapeHTML(bs.at(-1).label)+' 小节</span>';sec.append(h);
+  for(const p of shown){const row=p.systems[sid];const label=document.createElement('div');label.className='part-label'+(p.role==='solo'?' solo':'');label.textContent=p.name;const wrap=document.createElement('div');wrap.className='staff-scroll';const inside=document.createElement('div');inside.className='staff-content';const img=document.createElement('img');img.loading='lazy';img.decoding='async';img.alt='第 '+(sid+1)+' 行 '+p.name+' 谱';img.src=row.image;const lyr=document.createElement('div');lyr.className='lyrics';lyr.innerHTML=lyricsSVG(p,sid);inside.append(img,lyr);if(reader.numbers){const nums=document.createElement('div');nums.className='numbers';nums.innerHTML=row.numbers;inside.append(nums)}wrap.append(inside);sec.append(label,wrap)}
+  box.append(sec);
+ }
+}
+
+// ---------- 初始化 ----------
+function init(){
+ document.title=DATA.title+' · 声部练习室';text('title',DATA.title);text('sub','原速 '+DATA.bpm+' BPM · '+N+' 小节 · '+DATA.parts.length+' 个声部');if(DATA.unchecked.length){$('draft').hidden=false;text('draft','待校对：'+DATA.unchecked.join('、'))}
+ for(const p of DATA.parts){const option=document.createElement('option');option.value=p.id;option.textContent=p.name;$('part').append(option);const row=document.createElement('div');row.className='channel';const label=document.createElement('label');const check=document.createElement('input');check.type='checkbox';check.setAttribute('aria-label','播放'+p.name);check.onchange=()=>editAudible(p.id,check.checked);listenChecks[p.id]=check;label.append(check,document.createTextNode(' '+p.name));const controls=document.createElement('div');controls.className='volume-control';const slider=document.createElement('input');slider.id='volume-'+p.id;slider.type='number';slider.min=0;slider.max=100;slider.step=5;slider.inputMode='numeric';slider.setAttribute('aria-label',p.name+'音量百分比');const output=document.createElement('output');output.htmlFor=slider.id;sliders[p.id]=slider;outputs[p.id]=output;slider.onchange=()=>editVolume(p.id,slider.value);const lower=document.createElement('button'),higher=document.createElement('button');lower.textContent='−';higher.textContent='+';lower.setAttribute('aria-label',p.name+'音量降低10%');higher.setAttribute('aria-label',p.name+'音量提高10%');lower.onclick=()=>editVolume(p.id,volumes[p.id]-10);higher.onclick=()=>editVolume(p.id,volumes[p.id]+10);controls.append(lower,slider,output,higher);row.append(label,controls);$('mix').append(row)}
+ $('part').value=selected;$('tempo').value=DATA.bpm;$('from').max=N;$('to').max=N;$('to').value=N;text('slow','慢练 '+Math.max(20,Math.round(DATA.bpm*.75)));text('normal','原速 '+DATA.bpm);initialMix();
+ $('part').onchange=()=>{selected=$('part').value;initialMix();referenceChoices();showSystem(viewSystem);showBeat(nowBeat());savePreferences();setMedia()};
+ $('referencePart').onchange=()=>{referenceChoice=$('referencePart').value;showSystem(viewSystem);savePreferences()};
+ $('play').onclick=toggle;$('reset').onclick=toStart;$('back').onclick=()=>stepBar(-1);$('fwd').onclick=()=>stepBar(1);
+ $('tempo').onchange=()=>{$('tempo').value=tempo();changed()};
+ $('slow').onclick=()=>{$('tempo').value=Math.max(20,Math.round(DATA.bpm*.75));changed();text('status','慢练 '+tempo())};
+ $('normal').onclick=()=>{$('tempo').value=DATA.bpm;changed();text('status','原速 '+DATA.bpm)};
+ for(const id of ['from','to'])$(id).onchange=()=>{range();paintLoop();if(lineLoop===null&&$('loop').checked){const [lo,hi]=range();if(!playing&&(position<lo||position>=hi)){position=lo;showBeat(lo)}changed()}};
+ $('loop').onchange=()=>{if($('loop').checked)lineLoop=null;const [lo,hi]=range(),on=$('loop').checked,cur=nowBeat();changed();paintLoop();
+  if(on&&(cur<lo||cur>=hi)){if(playing)begin(lo,true);else{position=lo;showBeat(lo)}}else if(playing)refresh();
+  text('status',on?loopText():'已关闭循环')};
+ for(const id of ['countin','click'])$(id).onchange=changed;
+ $('prev').onclick=()=>moveLine(-1);$('next').onclick=()=>moveLine(1);$('nextFocus').onclick=()=>moveLine(1);
+ $('lineplay').onclick=()=>{
+  if(lineLoop!==null){lineLoop=null;changed();paintLoop();if(playing)refresh();text('status','已结束循环本行');return}
+  lineLoop=viewSystem;stale=true;paintLoop();position=systemBars(lineLoop)[0].beat;showBeat(position);begin(position,$('countin').checked);text('status',loopText())};
+ const seek=$('seek');seek.min=0;seek.max=DATA.totalBeats;seek.step='any';seek.value=0;
+ seek.oninput=()=>{dragging=true;seek.style.setProperty('--p',100*seek.value/DATA.totalBeats+'%');text('seekLabel','拖到第 '+barAt(Number(seek.value)).label+' 小节')};
+ seek.onchange=()=>{dragging=false;locate(barAt(Number(seek.value)).beat)};
+ $('modeListen').onclick=()=>setMode('listen');$('modeRead').onclick=()=>setMode('read');
+ $('readByParts').onclick=()=>{reader.view='parts';renderReader();savePreferences()};$('readPages').onclick=()=>{reader.view='pages';renderReader();savePreferences()};
+ const savedMode=loadPreferences();referenceChoices();showSystem(0);showBeat(0);paintPlay();paintLoop();bindMedia();setMedia();
+ setMode(location.hash==='#read'?'read':savedMode);
+ text('status','正在准备钢琴音色…');
+ ready.then(()=>{refresh();if(!playing)text('status','准备好了，点 ▶ 播放')}).catch(e=>{text('status','音频未能准备，请用系统浏览器打开');console.error(e)});
+}
+function savePreferences(){try{localStorage.setItem('choir-practice:'+DATA.title,JSON.stringify({selected,referenceChoice,volumes,audible,mixOverrides,mode,reader}))}catch{}}
+function loadPreferences(){
+ try{
+  const p=JSON.parse(localStorage.getItem('choir-practice:'+DATA.title)||'null');if(!p)return 'listen';
+  if(DATA.parts.some(x=>x.id===p.selected)){selected=p.selected;$('part').value=selected;initialMix()}
+  if(p.referenceChoice==='auto'||p.referenceChoice===''||DATA.parts.some(x=>x.id===p.referenceChoice))referenceChoice=p.referenceChoice;
+  if(DATA.melodyGuide){for(const q of DATA.parts){const v=p.mixOverrides?.volumes?.[q.id],a=p.mixOverrides?.audible?.[q.id];if(typeof v==='number')mixOverrides.volumes[q.id]=clamp(v,0,100);if(typeof a==='boolean')mixOverrides.audible[q.id]=a}syncGuidedMix(referenceBeat);changed()}
+  else for(const q of DATA.parts){if(typeof p.volumes?.[q.id]==='number')setVolume(q.id,p.volumes[q.id]);if(typeof p.audible?.[q.id]==='boolean')setAudible(q.id,p.audible[q.id])}
+  if(p.reader&&Array.isArray(p.reader.parts))reader={parts:p.reader.parts.filter(id=>DATA.parts.some(x=>x.id===id)),numbers:p.reader.numbers!==false,view:p.reader.view==='pages'?'pages':'parts'};
+  return p.mode==='read'?'read':'listen';
+ }catch{return 'listen'}
+}
 window.addEventListener('pagehide',savePreferences);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&mode==='listen')showBeat(nowBeat())});
 init();
 </script>
 </html>

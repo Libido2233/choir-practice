@@ -3,9 +3,10 @@
 `scripts/build_player.py` 将校正后的数据、原谱切片、简谱和钢琴采样嵌入单文件 HTML。它负责验证与打包；识谱、音符校正、简谱绘制先按 `score-workflow.md` 完成。
 
 ```powershell
-python <Skill目录>/scripts/build_player.py 已校正练习数据.json --output "声部练习室 - 曲名.html"
+python <Skill目录>/scripts/build_player.py 已校正练习数据.json --score-pdf 原谱.pdf --output "声部练习室 - 曲名.html"
 python <Skill目录>/scripts/build_player.py 待校对数据.json --output 识谱草稿.html --draft
-python <Skill目录>/scripts/check_project.py 已校正练习数据.json --html "声部练习室 - 曲名.html"
+python <Skill目录>/scripts/check_project.py 已校正练习数据.json --html "声部练习室 - 曲名.html" --score-pdf 原谱.pdf
+node <Skill目录>/scripts/check_player.cjs "声部练习室 - 曲名.html"
 python <Skill目录>/scripts/build_player.py --self-test
 ```
 
@@ -13,7 +14,9 @@ python <Skill目录>/scripts/build_player.py --self-test
 
 路径参数均由调用方传入。数据内相对图像路径按 JSON 所在目录解析；HTML 不依赖原路径。生成器拒绝覆盖已有文件，更新时明确加 `--overwrite`。
 
-已具备 Node.js 时，可运行 `node <Skill目录>/scripts/check_player.cjs` 检查六声部独立音量、声部切换、当前/下一行、变拍、暂停和循环逻辑。这个检查使用模拟音频与界面，不替代真实浏览器试听和手机测试。
+`--score-pdf` 把原谱每页转成灰度 PNG 嵌入（字段 `scorePages`），供“只看谱 · 原谱”使用；需要 PyMuPDF（`pip install pymupdf`）或 pdftoppm，有 Pillow 时自动压缩。也可以在 JSON 里直接写 `"scorePages": ["原谱页/01.png", …]`。
+
+已具备 Node.js 时，`node <Skill目录>/scripts/check_player.cjs [HTML]` 用模拟 DOM 与音频元素检查默认混音、播放/暂停/预备拍、上一节/下一节/回起点、循环本行与手动循环、热切换、melodyGuide 和只看谱；不带参数时检查模板。这个检查不替代真实浏览器试听和手机测试。
 
 ## 数据结构
 
@@ -53,6 +56,7 @@ python <Skill目录>/scripts/build_player.py --self-test
 - 原谱某行未列出声部时，行数据可标 `sourceAbsent:true`，提供文字提示谱图及空白简谱；时间轴占位休止不能当作原谱明确休止。
 - 每个声部的 `systems` 长度须等于全局行数，每行都包含该声部图和简谱；整行休止也照常保留。行图为同一小节范围，图像和数字使用一致的横坐标。
 - `image` 支持本地图像、完整 SVG 或图像 data URL；`numbers` 支持 SVG 文件或完整 SVG 字符串。SVG 字符上的 `data-beat`、`data-duration` 可驱动逐音高亮；使用 `data-event` 标记每个音/休止。
+- 可选 `scorePages`：原谱整页图像数组（本地 PNG/JPEG/WebP 路径或 data URL），只用于“只看谱 · 原谱”，不参与播放；通常由 `--score-pdf` 自动生成。
 - 总时长来自小节末端。变拍通过每小节 `dur`/`beats`/`beatType` 表达。不要在休止处压缩各轨时间。速度是本次练习的固定 BPM，速度变化需另行扩展后验证。
 
 ## 自包含与署名

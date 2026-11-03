@@ -6,7 +6,10 @@ import copy
 import json
 import math
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -204,9 +207,50 @@ def prepare(raw, base, draft=False):
     default = data.get("defaultPart") or next((p["id"] for p in parts if p["role"] in {"voice", "solo"}), parts[0]["id"])
     if default not in seen:
         raise ValueError("defaultPart 不是现有声部")
+    pages = data.get("scorePages")
+    if pages is not None:
+        if not isinstance(pages, list):
+            raise ValueError("scorePages 应为原谱页图像数组")
+        data["scorePages"] = [resource(page, base) for page in pages]
     data.update(defaultPart=default, totalBeats=end, systemCount=system + 1, unchecked=unchecked)
     data.setdefault("notation", "固定唱名 1=C · 中音1=C4")
     return data
+
+
+def pdf_pages(pdf, width=1400):
+    """把原谱 PDF 每页转成灰度 PNG（data URL），供“只看谱 · 原谱”使用。"""
+    pdf = Path(pdf)
+    if not pdf.is_file():
+        raise ValueError(f"找不到原谱 PDF：{pdf}")
+    images = []
+    try:
+        import fitz  # PyMuPDF
+        with fitz.open(pdf) as doc:
+            for page in doc:
+                zoom = width / page.rect.width
+                pix = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom), colorspace=fitz.csGRAY, alpha=False)
+                images.append(pix.tobytes("png"))
+    except ImportError:
+        tool = shutil.which("pdftoppm")
+        if not tool:
+            raise ValueError("嵌入原谱页需要 PyMuPDF（pip install pymupdf）或 pdftoppm；也可先把每页导出为图片，写入 JSON 的 scorePages")
+        with tempfile.TemporaryDirectory() as tmp:
+            subprocess.run([tool, "-png", "-gray", "-scale-to-x", str(width), "-scale-to-y", "-1", str(pdf), str(Path(tmp) / "p")], check=True, capture_output=True)
+            images = [f.read_bytes() for f in sorted(Path(tmp).glob("p*.png"))]
+    if not images:
+        raise ValueError("原谱 PDF 没有可用页面")
+    try:  # 有 Pillow 时压成 8 位灰度，体积约减半
+        import io
+        from PIL import Image
+        packed = []
+        for b in images:
+            out = io.BytesIO()
+            Image.open(io.BytesIO(b)).convert("L").save(out, "PNG", optimize=True)
+            packed.append(out.getvalue() if out.tell() < len(b) else b)
+        images = packed
+    except ImportError:
+        pass
+    return ["data:image/png;base64," + base64.b64encode(b).decode() for b in images]
 
 
 def render(data):
@@ -249,6 +293,12 @@ def self_test():
         except ValueError:
             pass
     assert "__CHOIR_DATA__" not in html and 'data:image/svg+xml;base64,' in html
+    for marker in ('id="modeRead"', 'id="readerParts"', 'id="fwd"', 'id="back"', 'id="lineplay"'):
+        assert marker in html, "模板缺少 " + marker
+    assert "锁屏听" not in html and "重唱本小节" not in html
+    paged = copy.deepcopy(raw)
+    paged["scorePages"] = [svg]
+    assert prepare(paged, Path.cwd())["scorePages"][0].startswith("data:image/svg+xml;base64,")
     broken = copy.deepcopy(raw)
     broken["parts"][1]["verified"] = False
     try:
@@ -285,6 +335,7 @@ def main():
     parser.add_argument("input", nargs="?", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--draft", action="store_true")
+    parser.add_argument("--score-pdf", type=Path, help="原谱 PDF；逐页嵌入，供“只看谱 · 原谱”使用")
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
@@ -298,10 +349,13 @@ def main():
     if args.output.suffix.lower() != ".html":
         raise ValueError("输出文件应使用 .html 扩展名")
     data = prepare(json.loads(args.input.read_text(encoding="utf-8-sig")), args.input.resolve().parent, args.draft)
+    if args.score_pdf:
+        data["scorePages"] = pdf_pages(args.score_pdf)
     result = render(data)
     with args.output.open("w" if args.overwrite else "x", encoding="utf-8") as f:
         f.write(result)
-    print(f"已生成：{args.output.resolve()}；{len(data['parts'])} 声部，{len(data['bars'])} 小节。")
+    pages = len(data.get("scorePages") or [])
+    print(f"已生成：{args.output.resolve()}；{len(data['parts'])} 声部，{len(data['bars'])} 小节" + (f"，原谱 {pages} 页。" if pages else "；未嵌入原谱页（可加 --score-pdf）。"))
 
 
 if __name__ == "__main__":

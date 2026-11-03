@@ -6,7 +6,7 @@
 
 PDF/图片可用本地 Audiveris 得到 MusicXML 初稿，再按原谱核对。矢量 PDF 的字形位置可辅助修正，但音乐字体、谱线间距和声部顺序都须从当前谱确认。扫描件需先检查倾斜、裁切和清晰度。从当前谱确定音符位置、小节数、拍号与声部顺序。
 
-先检查当前 Python 中可用的 PDF 库和本地识谱工具，按已安装能力选实现。生成练习 HTML 的脚本只用 Python 标准库；PDF 提取和识谱依赖独立准备。Audiveris 项目：https://github.com/Audiveris/audiveris 。Skill 不附带其程序，分享时按其许可处理。识谱进程退出成功后仍需确认 MusicXML/MXL 可解析、声部与小节完整；日志中的保存失败不能只看退出码判断。
+先检查当前 Python 中可用的 PDF 库和本地识谱工具，按已安装能力选实现。不加 `--score-pdf` 时，生成器只用 Python 标准库；嵌入原谱页的依赖见 [播放器数据](player-data.md)。PDF 提取和识谱依赖独立准备。Audiveris 项目：https://github.com/Audiveris/audiveris 。Skill 不附带其程序，分享时按其许可处理。识谱进程退出成功后仍需确认 MusicXML/MXL 可解析、声部与小节完整；日志中的保存失败不能只看退出码判断。
 
 ## 音高与节奏
 

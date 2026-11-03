@@ -7,7 +7,7 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from build_player import prepare, SKILL, SAMPLES
+from build_player import prepare, pdf_pages, SKILL, SAMPLES
 
 
 def check_html(data, html):
@@ -36,8 +36,11 @@ def main():
     parser.add_argument("input", type=Path)
     parser.add_argument("--html", type=Path)
     parser.add_argument("--draft", action="store_true")
+    parser.add_argument("--score-pdf", type=Path, help="生成时用过的原谱 PDF")
     args = parser.parse_args()
     data = prepare(json.loads(args.input.read_text(encoding="utf-8-sig")), args.input.resolve().parent, args.draft)
+    if args.score_pdf:
+        data["scorePages"] = pdf_pages(args.score_pdf)
     if args.html:
         check_html(data, args.html.read_text(encoding="utf-8-sig"))
     print(f"PASS：{len(data['parts'])}声部、{len(data['bars'])}小节、{data['systemCount']}行，数据和谱面资源有效。")
